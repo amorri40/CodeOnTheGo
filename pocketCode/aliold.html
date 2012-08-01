@@ -1,0 +1,24 @@
+<div class="toolbar">
+	<h1 id="ExName" onclick="this.innerHTML=exercise;">Code Editor</h1>
+	<a class="button back" onclick="$('.jsTouch.div1').show(); myTouch1.width=320;
+	   myTouch1.height=600; jsTouch.resize();  jsTouch.loadPage('pocketCode/pythonEx.html', { transition: 'slide-right' });">Back</a>
+</div>
+<div class="content" id="cm-s-default" style="background:#FFFFFF"; text-shadow:none;>
+   <div id="wrapper" tyle="position:relative; z-index:1;
+    width:auto/* your desired width, auto and 100% are fine */;
+    height:200/* element height */;
+    overflow:auto/* hidden|auto|scroll */;">
+       <div id="scroller">
+          <!--<iframe src="pocketCode/ali.html" width="50px" height="100px" scrolling="yes"></iframe>-->
+       </div>
+   </div>
+   <iframe src="pocketCode/ali.html" width="1200px" height="100%" scrolling="no" overflow="auto"></iframe>
+   <script>function loaded() {
+	   myTouch1.width=1200;
+	   myTouch1.height=2400;
+	   //$(".jsTouch.div1").hide();
+	   jsTouch.resize();
+	//document.addEventListener('touchmove', function(e){ e.preventDefault(); });
+	//myScroll = new iScroll('scroller');
+} loaded();</script>
+</div>

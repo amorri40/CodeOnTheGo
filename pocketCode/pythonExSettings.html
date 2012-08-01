@@ -1,0 +1,39 @@
+<div class="toolbar">
+	<h1 id="ExName" onclick="this.innerHTML=exercise;">Python Ex</h1>
+	<a class="button back" onclick="jsTouch.loadPage('pocketCode/pythonEx.html', { transition: 'slide-right' });">Back</a>
+</div>
+
+<script> $(document.getElementById("ExName")[0]).ready(function() {
+		document.getElementById("ExName").innerHTML=exercise;
+ 	}); </script>
+
+<div class="content">
+<H1> Goal: Print text to the user</H1> 
+ 
+
+    <ul class="rounded">
+		<li><a onclick="void(0);">Exercise Tutorial & Help</a></li>
+    </ul>
+    
+    
+	<form id="lform" name="lform" method="post" target="lframe" action="pages/forms_save.php">
+		<ul class="rounded">
+				<li>
+					<div class="label">Show Hints</div>
+					<div class="field"> <span class="toggle"> <input name="status" type="checkbox"> </span> </div>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<div class="label">Hidden</div>
+					<div class="field"><input type="number" name="nohidden" value="3" autocapitalize="off"></div>
+					<div class="clear"></div>
+				</li>
+		</ul>
+		<div style="text-align: center">
+			<a href="javascript: void(0);" onclick="jsTouch.loadPage('pocketCode/aliold.html', { transition: 'slide-left' });" class="button-green" style="width: 270px">Play</a>
+			<br><br>
+			<iframe name="lframe" style="width: 1px; height: 1px;" frameborder="0"></iframe>
+			<br><br>
+		</div>
+	</form>
+</div>
