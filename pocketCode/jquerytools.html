@@ -1,0 +1,102 @@
+<html>
+<head>
+<link id="coreCSS" type="text/css" rel="stylesheet" media="screen" href="jquerytools.css">
+<link id="coreCSS" type="text/css" rel="stylesheet" media="screen" href="tabs-no-images.css">
+<script src="http://cdn.jquerytools.org/1.2.7/full/jquery.tools.min.js"></script>
+
+
+<style>
+/* alternate colors: skin2 */
+ul.skin2 a {
+    background-color:#89a;
+    color:#fff !important;
+}
+
+/* mouseover state */
+ul.skin2 a:hover {
+    background-color:#678;
+}
+
+/* active tab */
+ul.skin2 a.current {
+    background-color:#4F5C6A;
+    border-bottom:2px solid #4F5C6A;
+}
+
+/* tab pane with background gradient */
+div.skin2 div {
+    min-height:200px;
+    color:#fff;
+    background:#234 url(/media/img/gradient/h300.png) repeat-x scroll 0 -50px;
+
+    /* IE6 does not support PNG24 images natively */
+    _background:#4F5C6A;
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+</head>
+<body style="background:#09C;">
+
+
+<!-- trigger element. a regular workable link -->
+<div style="top:70%; left:50%; position:absolute;">
+<a id="download_now">Download now</a>
+</div>
+ 
+<!-- tooltip element -->
+<div class="tooltip">
+<script>
+ $("#download_now").tooltip({ effect: 'slide'});
+/* 
+ // perform JavaScript after the document is scriptable.
+$(function() {
+    // setup ul.tabs to work as tabs for each div directly under div.panes
+    $("ul.tabs").tabs("div.panes > div");
+});*/
+ </script>
+ 
+ <!-- activate tabs with JavaScript -->
+<script>
+  $(function() {
+  $("ul.skin2").tabs("div.skin2 > div");
+  });
+</script>
+    
+    
+  <!--</table></div>-->
+<div style="overflow:hidden; height:85%; margin:0;">
+  <ul class="css-tabs skin2">
+    <li><a href="#">Tab 1</a></li>
+    <li><a href="#">Tab 2</a></li>
+    <li><a href="#">Tab 3</a></li>
+  </ul>
+ <div class="css-panes skin2">
+  <div>
+    Hello
+  </div>
+ </div>
+ <div class="css-panes skin2">
+  <div>
+    Hello 2
+  </div>
+ </div>
+ <div class="css-panes skin2">
+  <div>
+    Hello 3
+  </div>
+ </div>
+</div>
+
+
+
+</body>
+</html>
