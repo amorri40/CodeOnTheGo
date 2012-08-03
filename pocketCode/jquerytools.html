@@ -34,7 +34,7 @@ div.skin2 div {
 }
 
 /* iphone auto zoom */
-input[type='text'],input[type='number'],textarea {font-size:16px;}
+input[type='text'],input[type='number'],textarea,select {font-size:16px;}
 </style>
 
 
@@ -54,18 +54,16 @@ input[type='text'],input[type='number'],textarea {font-size:16px;}
 <div style="top:70%; left:50%; position:absolute;">
 <a id="download_now">Download now</a>
 </div>
- 
+
+
+
 <!-- tooltip element -->
-<div class="tooltip">
+<div class="tooltip">  
+
 <script>
  $("#download_now").tooltip({ effect: 'slide'});
-/* 
- // perform JavaScript after the document is scriptable.
-$(function() {
-    // setup ul.tabs to work as tabs for each div directly under div.panes
-    $("ul.tabs").tabs("div.panes > div");
-});*/
  </script>
+
  
  <!-- activate tabs with JavaScript -->
 <script>
@@ -85,19 +83,38 @@ function zoomEnable(){
   $('head').prepend('<meta name="viewport" content="user-scalable=1" />');
 }
 </script>
-    
+
+<script>
+//scroll to element script
+(function($) {
+    $.fn.goTo = function() {
+		var scrollX = window.pageXOffset; var scrollY = window.pageYOffset;
+		//alert($(this).offset().left);
+        /*$('html, body').animate({
+            scrollTop: $(this).offset().top + 'px'
+        }, 'fast');*/
+		window.pageXOffset=0;//$(this).offset().right;
+		window.pageYOffset=0;//$(this).offset().top;
+		window.scrollTo($(this).offset().left-70,$(this).offset().top-175);
+        return this; // for chaining...
+    }
+})(jQuery);
+</script>
+
+   
     
   <!--</table></div>-->
- <div style="overflow:hidden; height:88%; margin:0;"> <!-- main div in tooltip -->
+ <div style="overflow:hidden; height:88%; width:100%; margin:0;"> <!-- main div in tooltip -->
  
- <div style="overflow:hidden; height: 20px; max-height:30px; width:auto;"> <!-- tabs -->
+  <div style="overflow:hidden; height: 20px; max-height:30px; width:auto;"> <!-- tabs -->
   <ul class="css-tabs skin2">
-    <li style="width='25%'; font-size:6px;"><a href="#">Statements</a></li>
-    <li style="width='25%'; font-size:8px;"><a href="#">Expressions</a></li>
-    <li style="width='25%'; font-size:8px;"><a href="#">Functions</a></li>
-    <li style="width='25%'; font-size:8px;"><a href="#">Variables</a></li>
+    <li><a href="#">Statements</a></li>
+    <li><a href="#">Expressions</a></li>
+    <li><a href="#">Functions</a></li>
+    <li><a href="#">Variables</a></li>
   </ul>
  </div>
+ 
  <div class="css-panes skin2"> <!-- statements tab -->
   <div>
     Statements go here
@@ -105,7 +122,9 @@ function zoomEnable(){
  </div>
  <div class="css-panes skin2">
   <div>
-    <select>
+  <table border="0" style="width:90%;">
+<tr>
+<td ><select style="width:90px;" onclick="$('#download_now').goTo();">
   <option value="volvo">Literal...</option>
   <option value="saab">String</option>
   <option value="mercedes">Integer</option>
@@ -113,7 +132,9 @@ function zoomEnable(){
   <option value="audi">Long</option>
   <option value="audi">Imaginary Number</option>
 </select>
-<select>
+</td>
+<td >
+<select style="width:90px;" onclick="$('#download_now').goTo();">
 <option value="audi">Operators..</option>
 <option value="audi">Addition x+y</option>
 <option value="audi">Subtraction x-y</option>
@@ -129,9 +150,10 @@ function zoomEnable(){
 <option value="audi">Bitwise NOT ~x</option>
 <option value="audi">Left-shift x&lt;&lt;y</option>
 <option value="audi">Right-shift x&gt;&gt;y</option>
-	
 </select>
-<select>
+</td>
+<td >
+<select style="width:90px;" onclick="$('#download_now').goTo();">
 <option value="audi">Comparisons..</option>
 <option value="audi">Equality x==y</option>
 <option value="audi">Inequality x!=y</option>
@@ -144,7 +166,13 @@ function zoomEnable(){
 <option value="audi">Membership test x in y</option>
 <option value="audi">Not Membership test x not in y</option>
 </select>
-<select>
+</td>
+</tr>
+
+<tr>
+
+<td>
+<select style="width:90px;" onclick="$('#download_now').goTo();">
 <option value="audi">Boolean..</option>
 <option value="audi">and (Expression)</option>
 <option value="audi">or (Expression)</option>
@@ -152,7 +180,9 @@ function zoomEnable(){
 <option value="audi">True</option>
 <option value="audi">False</option>
 </select>
-<select>
+</td>
+<td>
+<select style="width:90px;" onclick="$('#download_now').goTo();">
 <option value="audi">Other..</option>
 <option value="audi">List creation [expr,...]</option>
 <option value="audi">Dictionary creation {key:expr,...}</option>
@@ -163,9 +193,16 @@ function zoomEnable(){
 <option value="audi">Indexing x[index]</option> 
 <option value="audi">String converstion `expr,...`</option>
 <option value="audi">Lambda lambda arg,...: expr</option>
-
-
 </select>
+</td>
+</tr>
+
+</table>
+ <button type="button" onclick="$('#download_now').goTo();">Click Me!</button>   
+
+
+
+
   </div>
  </div>
  <div class="css-panes skin2">
@@ -181,6 +218,7 @@ function zoomEnable(){
     <input type="text" name="fname" style="width:auto" />
   </div>
  </div>
+ 
 </div>
 
 
