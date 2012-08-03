@@ -18,9 +18,9 @@ ul.css-tabs li {
 /* link inside the tab. uses a background image */
 ul.css-tabs a {
     float:left;
-    font-size:13px;
+    font-size:11px;
     display:block;
-    padding:5px 30px;
+    padding:5px 20px;
     text-decoration:none;
     border:1px solid #666;
     border-bottom:0px;

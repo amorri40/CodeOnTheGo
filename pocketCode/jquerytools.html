@@ -32,6 +32,9 @@ div.skin2 div {
     /* IE6 does not support PNG24 images natively */
     _background:#4F5C6A;
 }
+
+/* iphone auto zoom */
+input[type='text'],input[type='number'],textarea {font-size:16px;}
 </style>
 
 
@@ -70,28 +73,112 @@ $(function() {
   $("ul.skin2").tabs("div.skin2 > div");
   });
 </script>
+
+<script>
+$("input[type=text], textarea").mouseover(zoomDisable).mousedown(zoomEnable);
+function zoomDisable(){
+  $('head meta[name=viewport]').remove();
+  $('head').prepend('<meta name="viewport" content="user-scalable=0" />');
+}
+function zoomEnable(){
+  $('head meta[name=viewport]').remove();
+  $('head').prepend('<meta name="viewport" content="user-scalable=1" />');
+}
+</script>
     
     
   <!--</table></div>-->
-<div style="overflow:hidden; height:85%; margin:0;">
+ <div style="overflow:hidden; height:88%; margin:0;"> <!-- main div in tooltip -->
+ 
+ <div style="overflow:hidden; height: 20px; max-height:30px; width:auto;"> <!-- tabs -->
   <ul class="css-tabs skin2">
-    <li><a href="#">Tab 1</a></li>
-    <li><a href="#">Tab 2</a></li>
-    <li><a href="#">Tab 3</a></li>
+    <li style="width='25%'; font-size:6px;"><a href="#">Statements</a></li>
+    <li style="width='25%'; font-size:8px;"><a href="#">Expressions</a></li>
+    <li style="width='25%'; font-size:8px;"><a href="#">Functions</a></li>
+    <li style="width='25%'; font-size:8px;"><a href="#">Variables</a></li>
   </ul>
- <div class="css-panes skin2">
+ </div>
+ <div class="css-panes skin2"> <!-- statements tab -->
   <div>
-    Hello
+    Statements go here
   </div>
  </div>
  <div class="css-panes skin2">
   <div>
-    Hello 2
+    <select>
+  <option value="volvo">Literal...</option>
+  <option value="saab">String</option>
+  <option value="mercedes">Integer</option>
+  <option value="audi">Float</option>
+  <option value="audi">Long</option>
+  <option value="audi">Imaginary Number</option>
+</select>
+<select>
+<option value="audi">Operators..</option>
+<option value="audi">Addition x+y</option>
+<option value="audi">Subtraction x-y</option>
+<option value="audi">Multiplication x*y</option>
+<option value="audi">Division x/y</option>
+<option value="audi">Remainder x%y</option>
+<option value="audi">Truncating division x//y</option>
+<option value="audi">Power x**y</option>
+<option value="audi">Unary - -(Expression)</option>
+<option value="audi">Bitwise OR x|y</option>
+<option value="audi">Bitwise XOR x^y</option>
+<option value="audi">Bitwise AND x&amp;y</option>
+<option value="audi">Bitwise NOT ~x</option>
+<option value="audi">Left-shift x&lt;&lt;y</option>
+<option value="audi">Right-shift x&gt;&gt;y</option>
+	
+</select>
+<select>
+<option value="audi">Comparisons..</option>
+<option value="audi">Equality x==y</option>
+<option value="audi">Inequality x!=y</option>
+<option value="audi">Less Than x&lt;y</option>
+<option value="audi">Less Than Or Equal x&lt;=y</option>
+<option value="audi">Greater Than x&gt;y</option>
+<option value="audi">Greater Than or Equal x&gt;=y</option>
+<option value="audi">Identity test x is y</option>
+<option value="audi">Not Identity test x is not y</option>
+<option value="audi">Membership test x in y</option>
+<option value="audi">Not Membership test x not in y</option>
+</select>
+<select>
+<option value="audi">Boolean..</option>
+<option value="audi">and (Expression)</option>
+<option value="audi">or (Expression)</option>
+<option value="audi">not (Expression)</option>
+<option value="audi">True</option>
+<option value="audi">False</option>
+</select>
+<select>
+<option value="audi">Other..</option>
+<option value="audi">List creation [expr,...]</option>
+<option value="audi">Dictionary creation {key:expr,...}</option>
+<option value="audi">Ternary (X if true else Y)</option>
+<option value="audi">Tuple/Parameters (expression,..)</option> 
+<option value="audi">Single Tuple</option> 
+<option value="audi">Slicing x[index:index]</option> 
+<option value="audi">Indexing x[index]</option> 
+<option value="audi">String converstion `expr,...`</option>
+<option value="audi">Lambda lambda arg,...: expr</option>
+
+
+</select>
   </div>
  </div>
  <div class="css-panes skin2">
   <div>
-    Hello 3
+    Big search box at the bottom with variable names above it easily clickable (documentation will be to the right)
+    <br /><br /><br /><br /><br />
+    <input type="text" name="fname" style="width:100%;" />
+  </div>
+ </div>
+ <div class="css-panes skin2">
+  <div>
+    Big search box at the bottom with variable names above it easily clickable, will have scrollable locals and categories to narrow search down without typing, Attribute reference (object.attrib)
+    <input type="text" name="fname" style="width:auto" />
   </div>
  </div>
 </div>
