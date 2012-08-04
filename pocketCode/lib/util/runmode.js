@@ -6,7 +6,7 @@ CodeMirror.runMode = function(string, modespec, callback, options) {
     var node = callback, accum = [], col = 0;
     callback = function(text, style) {
       if (text == "\n") {
-        accum.push("<span class='newline'>{EOL}</span></line><br><line>");
+        accum.push("<span class='newline'>          </span></line><br><line>");
         col = 0;
         return;
       }
@@ -36,7 +36,7 @@ CodeMirror.runMode = function(string, modespec, callback, options) {
         accum.push("<span class=\"cm-" + CodeMirror.htmlEscape(style) + "\" \>"+ _space + escaped + "</span>"); //ali added the onClick
 	  }
       else
-        accum.push("<indentation id='indentation' num='"+escaped.length+"'>"+escaped+"</indentation>");
+        accum.push("<indentation class='indentation' num='"+escaped.length+"'>"+escaped+"</indentation>");
     }
   }
   var lines = CodeMirror.splitLines(string), state = CodeMirror.startState(mode);

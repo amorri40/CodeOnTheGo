@@ -1,7 +1,7 @@
 <table border="0" style="width:90%;">
 <tr>
   <td >
-   <select id="python_statements_line" style="width:90px;" onclick="window._bubble_current.goTo();" onChange="window[this.options[this.selectedIndex].value](); this.selectedIndex=0;">
+   <select id="python_statements_line" style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="window[this.options[this.selectedIndex].value](); this.selectedIndex=0;">
       <option value="void">Lines</option>
       <option value="newline">New Line below</option>
       <option value="void">Delete Current Line</option>
@@ -14,9 +14,10 @@
     </select>
   </td>
   <td>
-  <select id="python_statements_az" style="width:90px;" onclick="window._bubble_current.goTo();" onChange="window[this.options[this.selectedIndex].value](); this.selectedIndex=0;">
+  <select id="python_statements_az" style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="window[this.options[this.selectedIndex].value](); this.selectedIndex=0;">
       <option value="void">A-Z Statements</option>
       <option value="print_statement">print message to output</option>
+      <option value="if_statement">if expression is true</option>
       </select>
   </td>
  </tr>
@@ -29,18 +30,27 @@ function python_statements_action(el) {
 }
 
 /* initial setup when document loads */
-$(document).ready(function() {
+$(document).ready(function() { //quick change is for iphone not desktop
 //add iphone click wheel script to each select element	
  $("#python_statements_line").quickChange(function() { python_statements_action(this);});
  $("#python_statements_az").quickChange(function() { python_statements_action(this);}); 
 });
 
+/* insert_statement creates the elements only if it is an EOL (statements can't be used as expressions)*/
+function insert_statement(statementType,statementHTML) {
+	if (window._bubble_current_type!="EOL") {alert("You can only place statements at the start or end of a line"); return 0;}
+	var statementelement = document.createElement(statementType);
+	statementelement.innerHTML=statementHTML;
+	insertBefore(window._bubble_current,statementelement);
+}
 
 /* Functions to modify source*/
 function print_statement() {
-	if (window._bubble_current_type!="EOL") {alert("doesn't work for non EOL"); return 0;}
-	var print_keyword = document.createElement('print_statement');
-	print_keyword.innerHTML='<span class="cm-keyword">print </span> <span class="unknown-expression">??? </span>';
-	insertBefore(window._bubble_current,print_keyword);
+	insert_statement('print_statement','<span class="cm-keyword">print</span> <span class="unknown-expression">???</span>');
+}
+
+function if_statement() {
+	insert_statement('if_statement','<span class="cm-keyword">if</span> <span class="unknown-expression">???</span> : ');
+	newline(4);
 }
 </script>

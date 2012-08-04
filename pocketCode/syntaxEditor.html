@@ -124,25 +124,6 @@ if g_showOnly: print "Finished showing all packages for category: "+g_packageToS
 else: print "Finished updating "+g_packageToInstall
 </textarea>
 
-
-
-<!-- functions for code editing -->
-<script>
-
-function newline() {
-	var el = document.createElement('line');
-	var brel = document.createElement('br'); 
-	el.innerHTML="<span class='newline'> {EOL}</span>";
-	insertAfter(window._bubble_current.parentNode, brel);
-	insertAfter(brel,el);
-	
-	 $(el).click(function(e) {
-	   clickBubbleForElement(this,"EOL",window._bubble_newline_index);
-	});	
-	}
-
-</script>
-
 <!-- Dialog data -->
 <div class="mainContainer" style="visibility:hidden;">
 		<ul id="string">
@@ -154,6 +135,7 @@ function newline() {
 
 <!-- CodeBubble Data -->
 <span class="bubble"> <!-- start code bubble -->
+<span class="triangle"></span>
   <div id="tooltipheader">
     <table border="0" style="width:90%;">
       <tr>
@@ -161,7 +143,7 @@ function newline() {
       Tab:
       </td>
       <td>
-      <select id="syntaxcategory" style="width:200px;" onclick="window._bubble_current.goTo();" >
+      <select id="syntaxcategory" style="width:200px;" onclick="$(window._bubble_current).goTo();" >
       <option value="./SyntaxBlocks/python/statements.html">Statements</option>
       <option value="./SyntaxBlocks/python/expressions.html">Expressions</option>
       <option value="./SyntaxBlocks/python/functions.html">Functions</option>
