@@ -11,7 +11,7 @@ span.bubble {
       font-size: 14px;
       text-align: center;
       color: rgb(255, 255, 255);
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(230, 230, 230, 0.8);
       border: 0px solid rgb(255, 255, 255);
       border-radius: 5px;
       text-shadow: rgba(0, 0, 0, 0.0976563) 1px 1px 1px;
@@ -26,10 +26,10 @@ span.bubble:after { /*arrow*/
       height: 0;
       border-width: 10px;
       border-style: solid;
-      border-color: rgba(0, 0, 0, 0.3) transparent transparent transparent; /* arrow direction */
+      border-color: rgba(230, 230, 230, 0.5) transparent transparent transparent; /* arrow direction */
       top: 100%; /* top:-20*/
       left: 25%;
 }
 
 td {color:white; opacity:0.5;}
-select {opacity:0.5;}
+select {opacity:1;}

@@ -30,10 +30,17 @@
 				</li>
 		</ul>
 		<div style="text-align: center">
-			<a href="javascript: void(0);" onclick="jsTouch.loadPage('pocketCode/aliold.html', { transition: 'slide-left' });" class="button-green" style="width: 270px">Play</a>
+			<a href="javascript: void(0);" onclick="jsTouch.loadiFrame('pocketCode/aliold.html', { transition: 'slide-left' });" class="button-green" style="width: 270px">Play</a>
+            <!-- onclick="jsTouch.loadiFrame('pocketCode/aliold.html', { transition: 'slide-left' });" -->
 			<br><br>
 			<iframe name="lframe" style="width: 1px; height: 1px;" frameborder="0"></iframe>
 			<br><br>
 		</div>
 	</form>
+    <script> 
+    /* code to open all links in webapp 
+$('a').live('click', function (event) { event.preventDefault();
+    window.location = $(this).attr("href"); });
+/* end code to open all links in webapp */
+    </script>
 </div>

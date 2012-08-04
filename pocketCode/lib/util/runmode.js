@@ -6,7 +6,7 @@ CodeMirror.runMode = function(string, modespec, callback, options) {
     var node = callback, accum = [], col = 0;
     callback = function(text, style) {
       if (text == "\n") {
-        accum.push("<br>");
+        accum.push("<span class='newline' onClick='window.thevalue=this;'> {EOL}</span></line><br><line>");
         col = 0;
         return;
       }

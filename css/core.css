@@ -176,7 +176,7 @@ div.overlay .footer {
 }
 
 div.overlay .content {
-    -webkit-box-sizing: border-box;
+   /* -webkit-box-sizing: border-box;
 	margin: 0px;
     padding: 5px;
 	width: auto;
@@ -186,7 +186,7 @@ div.overlay .content {
 	bottom: 5px;
 	background-color: white;
 	-webkit-border-radius: 5px;
-	position: absolute;
+	position: absolute;*/
 }
 
 div.overlay div.content ul.simple { 

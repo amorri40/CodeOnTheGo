@@ -1,46 +1,45 @@
 <!doctype html>
 <html>
   <head>
-    <title>CoderGamez: Test</title>
+    <title>CodeOnTheGo</title>
+    <!-- code mirror includes -->
     <link rel="stylesheet" href="../pocketCode/lib/codemirror.css">
     <script src="../pocketCode/lib/codemirror.js"></script>
     <script src="../pocketCode/lib/util/runmode.js"></script>
     <!--<script src="../mode/xml/xml.js"></script>-->
     <script src="../pocketCode/mode/python/python.js"></script>
     <!--<link rel="stylesheet" href="../doc/docs.css">-->
+    
+    <!-- end codemirror includes -->
+    
     <meta name="apple-mobile-web-app-capable" content="yes" />
     
+    
+    
+    <!-- code bubble includes -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+      <script src="./codebubble.js"></script>
+      <link id="codebubbleCSS" type="text/css" rel="stylesheet" href="./codebubble.css">
+    <!-- End code bubble includes -->
+    
     <!-- Dialog scripts -->
-    <script type="text/javascript" src="scripts/jquery.js"></script>
-    <script type="text/javascript" src="scripts/dialog.jquery.js"></script>
-    <script type="text/javascript" src="scripts/scripts.js"></script>
+      <!--<script type="text/javascript" src="scripts/jquery.js"></script>-->
+      <script type="text/javascript" src="scripts/dialog.jquery.js"></script>
+      <script type="text/javascript" src="scripts/scripts.js"></script>
+    <!-- End dialog scripts -->
     
   </head>
-  <body onLoad="doHighlight(); createDialogs();" style=" width: 100%; overflow-x:auto; margin-top:0px; margin-left:4px; margin-bottom:0px;">
-    
-    <div id="wrapper" tyle="position:relative; z-index:1;
-    width:auto/* your desired width, auto and 100% are fine */;
-    height:200/* element height */;
-    overflow:auto/* hidden|auto|scroll */;">
-       <div id="scroller">
+  <body onLoad="doHighlight(); createDialogs(); createCodeBubble();" style=" width: 100%; overflow-x:auto; margin-top:0px; margin-left:4px; margin-bottom:0px;">
     
     <pre id="output" class="cm-s-default" style="width: 100%; height:100%;"></pre>
     
-    </div></div>
-    <script>function loaded() {
-	//document.addEventListener('touchmove', function(e){ e.preventDefault(); });
-	//myScroll = new iScroll('scroller');
-}
-document.addEventListener('DOMContentLoaded', loaded);</script>
-    
-    
-    
 <script>
-function doHighlight() {
-  CodeMirror.runMode(document.getElementById("code").value, "text/x-python",
-                     document.getElementById("output"));
-}
+  function doHighlight() {
+	CodeMirror.runMode(document.getElementById("code").value, "text/x-python",
+					   document.getElementById("output"));
+  }
 </script>
+
 <textarea id="code" style="width: 0px; height: 0px; visibility:hidden; overflow:hidden; padding: 0;">
 #!/usr/bin/python
 import os, urllib, hashlib, sys,zipfile,shutil, getopt
@@ -138,7 +137,7 @@ else: print "Finished updating "+g_packageToInstall
 
 
 
-<!-- Dialog data -->
+<!-- functions for code editing -->
 <script>function insertAfter(referenceNode, newNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
@@ -154,6 +153,8 @@ function newline() {
 	}
 
 </script>
+
+<!-- Dialog data -->
 <div class="mainContainer" style="visibility:hidden;">
 		<ul id="comment">
 			<li><a href="javascript:alert('Social site pressed')">Edit Comment</a></li>
@@ -176,8 +177,45 @@ function newline() {
         <li><a href="javascript:newline()">New Line Below</a></li>
         </ul>
         
-        </div>
-<a href="javascript:void(0);" onclick="jsTouch.loadPage('pocketCode/pythonExSettings.html', { transition: 'slide-left' });" class="openOptions">Go Back</a>
+</div>
+<!-- End of Dialog Data -->
+
+<!-- CodeBubble Data -->
+<span class="bubble"> <!-- start code bubble -->
+  <div id="tooltipheader">
+    <table border="0" style="width:90%;">
+      <tr>
+      <td>
+      Tab:
+      </td>
+      <td>
+      <select id="syntaxcategory" style="width:200px;" onclick="window._bubble_current.goTo();" >
+      <option value="./SyntaxBlocks/python/statements.html">Statements</option>
+      <option value="./SyntaxBlocks/python/expressions.html">Expressions</option>
+      <option value="./SyntaxBlocks/python/functions.html">Functions</option>
+      <option value="./SyntaxBlocks/python/variables.html">Variables</option>
+      </select>
+      </td>
+      </tr>
+    </table>
+  </div>
+  <div id="tooltippanel">
+  </div>
+</span>
+<script>
+function createCodeBubble() {
+  /*new tooltip script*/
+  $('.cm-variable').mouseover(function(e) {
+	  window._bubble_current=$(this);
+	  $('.bubble').css('top', $(this).offset().top-135 );
+	  $('.bubble').css('left', $(this).offset().left-70 );
+	  $('.bubble').css('display','block');
+	  $('.span.bubble:after').css('left', $(this).offset().left);})
+}
+</script>
+<!-- End of CodeBubble Data -->
+
+<a href="javascript:void(0);" onClick="jsTouch.loadPage('pocketCode/pythonExSettings.html', { transition: 'slide-left' });" class="openOptions">Go Back</a>
 
   </body>
 </html>

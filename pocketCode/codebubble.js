@@ -28,8 +28,14 @@ $.fn.quickChange = function(handler) {
 //scroll to element script
 (function($) {
 	  $.fn.goTo = function() {
+		  
 		  var scrollX = window.pageXOffset; var scrollY = window.pageYOffset;
-		  window.scrollTo($(this).offset().left-70,$(this).offset().top-130);
+		  if (window.orientation == 0) { //portrait
+		     window.scrollTo($(this).offset().left-70,$(this).offset().top-130); //set portrait scroll
+		  }
+		  else {
+			  window.scrollTo($(this).offset().left-70,$(this).offset().top-85); //set landscape scroll
+			  }
 		  return this; // for chaining...
 	  }
   })(jQuery);

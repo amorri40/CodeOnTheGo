@@ -3,7 +3,7 @@
 div.jsTouch {
 	-webkit-box-sizing: border-box;
 	overflow: hidden;
-	background: -webkit-gradient(linear, 0% 0%, 0% 50%, from(#f6f6f6), to(#e5e5e5));
+	/*background: -webkit-gradient(linear, 0% 0%, 0% 50%, from(#f6f6f6), to(#e5e5e5));*/
 	font-family: "Helvetica Neue", Helvetica;
 	border: 0px !important; 
 	padding: 0px !important;
@@ -12,7 +12,7 @@ div.jsTouch {
 div.jsTouchPanel {
 	border-left: 2px solid #aaa; 
 	overflow: hidden; 
-	background-color: black;
+	/*background-color: black;*/
 }
 
 div.jsTouch a {
@@ -47,9 +47,9 @@ div.jsTouch div.toolbar {
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#d4d9dd), color-stop(0.5, #abafb0), color-stop(0.5, #9ca0a2), color-stop(1, #aab0b2));
 	-webkit-box-shadow: 0px 0px 4px #bbb;
 	overflow: hidden;
-	position: absolute;
+	position: relative;
 	z-index: 5;
-	width: auto;
+	width:100%;/*width: auto;*/
 	left: 0px;
 	top: 0px;
 }

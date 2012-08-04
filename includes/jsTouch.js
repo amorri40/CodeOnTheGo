@@ -25,6 +25,21 @@ var jsTouch = {
 		
 	},
 	
+	loadiFrame: function(url, params, callBack) {
+		console.log("Load iframe");
+		if (window.event) { //if it was called as a mouse event
+		var currObj = this.getCurrentBox(window.event.target); //get the box (div) from the element that was clicked
+		}
+		/*// if target is defined - open there
+		if (params && typeof(params) == 'object' && params['target']) {
+			window.elements[params['target']].loadPage(url, params, callBack);
+		} else {
+			currObj.loadPage(url, params, callBack);
+		}*/
+		currObj.loadiFrame(url, params, callBack);
+		
+	},
+	
 	loadContent: function(url, params, callBack) {
 		if (window.event) { var currObj = this.getCurrentBox(window.event.target); }
 		// if target is defined - open there
@@ -145,7 +160,7 @@ var jsTouch = {
 		}
 	},
 	
-	getCurrentBox: function(el) {
+	getCurrentBox: function(el) { //basically gets the jsTouchPanel (myTouch1 etc) from an element that is inside it
 		var currObj = null;
 		var tmp 	= el;
 		while (tmp && tmp.tagName != 'BODY') {
@@ -177,6 +192,9 @@ function jsTouchBox(name, params) {
 	this._tmpCallBack;
 	this._tmpTimer;
 	this._lastDiv;
+	
+	this.loadiFrame = jsTouch_loadiFrame; //ali
+	this.animateiFrame	 = jsTouch_animateiFrame;
 		
 	function jsTouch_loadPage(url, params, callBack) {
 		// -- save some temp variables		
@@ -192,6 +210,26 @@ function jsTouchBox(name, params) {
 			"	obj.initTabs();"+
 			"	obj.initLinks();"+
 			"	if (obj._tmpCallBack && obj._tmpCallBack == 'function') { obj._tmpCallBack(); } "+
+			"}")
+		);
+	}
+	
+	function jsTouch_loadiFrame(url, params, callBack) {
+		console.log("load iFrame");
+		// -- save some temp variables		
+		this._tmpCallBack	= callBack;
+		// -- get the page
+		//this._tmpTimer = window.setTimeout(new Function("$('#"+ this.name +"').append('<div class=\"progress\">Loading...</div>')"), 200);	 //add the loading screen	
+		console.log(url);
+		$.get(url, {}, new Function("data", 
+			//"$('#"+ this.name +" > .progress').remove(); "+
+			"var obj = window.elements['"+ ((typeof(params) == 'object' && params['target']) ? params['target'] : this.name) +"']; "+ 
+			"if (obj && typeof(obj) == 'object') { "+ //check if valid
+			//"	clearTimeout(obj._tmpTimer); "+ //remove loading timeout
+			"	obj.animateiFrame(data, '"+ ((typeof(params) == 'object' && params['transition']) ? params['transition'] : "") +"'); "+
+			//"	obj.initTabs();"+
+			//"	obj.initLinks();"+
+			//"	if (obj._tmpCallBack && obj._tmpCallBack == 'function') { obj._tmpCallBack(); } "+
 			"}")
 		);
 	}
@@ -402,6 +440,97 @@ function jsTouchBox(name, params) {
 		//setTimeout("window.elements['"+ this.name +"'].initScroll();", 600); // if init scroll right away, then it slides upwards
 	}
 	
+	
+	function jsTouch_animateiFrame(HTML, transition) {
+		// get width and height of the div
+		var width  = this.width;
+		var height = this.height;
+		if (width == '')  width  = window.innerWidth;
+		if (height == '') height = window.innerHeight;
+		if (parseInt(width) < 0)  width = window.innerWidth + width;
+		if (parseInt(height) < 0) height = window.innerHeight + height;
+		// find two divs
+		if (this._lastDiv) {
+			var div_old = $('#'+ this.name +' > .jsTouch.div1')[0];
+			var div_new = $('#'+ this.name +' > .jsTouch.div2')[0];
+			this._lastDiv = false;
+		} else {
+			var div_old = $('#'+ this.name +' > .jsTouch.div2')[0];
+			var div_new = $('#'+ this.name +' > .jsTouch.div1')[0];
+			this._lastDiv = true;
+		}
+		$('#'+this.name)[0].style.cssText += '-webkit-perspective: 700px; overflow: hidden;';
+		
+		var comcss = ' width: '+ width +'px; height: '+ height +'px; overflow: hidden;';
+		div_old.style.cssText = 'position: absolute; z-index: 0; -webkit-backface-visibility: hidden;';
+		div_new.style.cssText = 'position: absolute; z-index: 1; -webkit-backface-visibility: hidden;';
+		
+		iframeHtml='<div class="toolbar" width="1000px" height="32px"><h1 id="ExName" onclick="this.innerHTML=exercise;">Code Editor</h1><a class="button back" onclick="alert(\"hi\"); jsTouch.loadPage("pocketCode/pythonEx.html", { transition: "slide-right" });">Back</a></div><div  id="cm-s-default" width="2000px"><iframe src="pocketCode/ali.html" width="1000px" height="100%" scrolling="yes" overflow=scroll></iframe></div>';
+	   // $("#myTouch1")[0].style.overflow="auto";
+		$("#myTouch1")[0].style.height="";
+		$("#myTouch1")[0].style.width="2000px";
+		$("#myTouch1")[0].style.position="";
+		$("#myTouch1")[0].style.webkitPerspective="";
+		div_new.style.width="2000px";
+		//this.width=2000;
+		//this.height=2000;
+		//HTML=iframeHtml;
+		div_new.innerHTML=HTML;
+		//$("body")[0].innerHTML='<iframe src="pocketCode/ali.html" width="100%" height="100%" scrolling="yes" overflow=auto></iframe>';
+		
+		/*switch (transition) {
+			case 'slide-left':
+				// init divs
+				div_old.style.cssText += comcss +'-webkit-transform: translate3d(0, 0, 0);';
+				//div_new.style.cssText += comcss +'-webkit-transform: translate3d('+ width +'px, 0, 0);';
+				//div_new.innerHTML = HTML;
+				// -- need a timing function because otherwise not working
+				window.setTimeout(function() {
+					div_new.style.cssText += '-webkit-transition: .5s; -webkit-transform: translate3d(0px, 0, 0);';
+					div_old.style.cssText += '-webkit-transition: .5s; -webkit-transform: translate3d(-'+ width +'px, 0, 0);';
+				}, 1);
+				break;
+				
+			
+				
+			default:
+				// init divs
+				div_old.style.cssText += comcss +'-webkit-transform: translate3d(0, 0, 0); opacity: 1;';
+				div_new.style.cssText += comcss +'-webkit-transform: translate3d(0, 0, 0); opacity: 0;';
+				div_new.innerHTML = HTML;
+				// -- need a timing function because otherwise not working
+				window.setTimeout(function() {
+					div_new.style.cssText += '-webkit-transition: .5s; opacity: 1;';
+					div_old.style.cssText += '-webkit-transition: .5s; opacity: 1;';
+				}, 1);
+				break;
+		}*/
+		// isert another DIV (needed for iScroll)
+		/*var tmp = $('.content', div_new)[0];
+		if (tmp) tmp.innerHTML = '<div>' + tmp.innerHTML + '</div>';
+		// insert <span> for back and forward buttons
+		var tmp = $('.toolbar .button.back', div_new)[0];
+		if (tmp) tmp.innerHTML = '<span class="s1"></span><span class="s2"></span>' + tmp.innerHTML;		
+		var tmp = $('.toolbar .button.next', div_new)[0];
+		if (tmp) tmp.innerHTML = '<span class="s1"></span><span class="s2"></span>' + tmp.innerHTML;		
+		// execute scripts
+		var d =	div_new.getElementsByTagName("script");
+		var t = d.length;
+		for (var x = 0; x < t; x++) {
+			var ns = document.createElement('script');
+			ns.type = "text/javascript";
+			if (d[x].text != '') ns.text = d[x].text;
+			if (d[x].src  != '') ns.src  = d[x].src;
+			div_new.appendChild(ns);
+		}				
+		// -------
+		this.resize();
+		this.initScroll();*/
+		//setTimeout("window.elements['"+ this.name +"'].initScroll();", 600); // if init scroll right away, then it slides upwards
+		
+	}
+	
+	
 	function jsTouch_initScroll() {
 		// make sure iScroll library is loaded
 		if (String(window.iScroll) == 'undefined') {
@@ -443,6 +572,7 @@ function jsTouchBox(name, params) {
 	}
 	
 	function jsTouch_resize() {
+		//alert('this resize');
 		// get width and height of the div
 		var width  = this.width;
 		var height = this.height;
@@ -471,7 +601,7 @@ function jsTouchBox(name, params) {
 		$('#'+ this.name +' div.toolbar').css('width', width+'px');
 		$('#'+ this.name +' div.footer').css('width', width+'px');
 		// -- set scroll to 0, 0 (in the browser it will hide url bar)
-		window.scrollTo(0, 1);		
+		window.scrollTo(0, 1);
 	}
 	
 	// -- register in elements array
@@ -496,5 +626,5 @@ function jsTouchBox(name, params) {
 }
 
 // -- few events
-window.addEventListener('resize', new Function("setTimeout(\"jsTouch.resize()\", 1)"));
+//window.addEventListener('resize', new Function("setTimeout(\"jsTouch.resize()\", 1)"));
 window.applicationCache.addEventListener('updateready', function(){ window.applicationCache.swapCache(); }, false);

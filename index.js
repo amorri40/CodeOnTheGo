@@ -17,16 +17,17 @@ document.addEventListener('orientationchange', resize, false);
 window.addEventListener('resize', resize, false);
 
 function resize() {
-	var width  = parseInt(window.innerWidth);
-	var height = parseInt(window.innerHeight);
+	//alert('resize');
+	//var width  = parseInt(window.innerWidth);
+	//var height = parseInt(window.innerHeight);
 	/*if (width > 1000 || height > 1000) {
-		myTouch1.width = 320;
-		myTouch2.width = -320;
-		$('#myTouch2').css('left', 320);
+		myTouch1.width = width;//320;
+		//myTouch2.width = -320;
+		//$('#myTouch2').css('left', 320);
 	} else {
 		myTouch1.width = width;
-		$('#myTouch2').css('left', width);
+		//$('#myTouch2').css('left', width);
 	}*/
-	jsTouch.resize();
+	//jsTouch.resize();
 }
 

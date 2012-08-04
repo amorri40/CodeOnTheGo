@@ -34,6 +34,7 @@
     width:285px; /* was 380 (1.9 times the height)*/
     font-size:11px;
     color:#fff;
+	opacity:0.4;
   }
  
   /* a .label element inside tooltip */

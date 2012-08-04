@@ -160,6 +160,8 @@ span.cm-string-2 {color: #f50; text-shadow:none;}
 #cm-s-default span.cm-hr {color: #999; text-shadow:none;}
 #cm-s-default span.cm-link {color: #00c; text-shadow:none;}
 
+#cm-s-default span.newline {color: #00F;}
+
 span.cm-header, span.cm-strong {font-weight: bold;}
 span.cm-em {font-style: italic;}
 span.cm-emstrong {font-style: italic; font-weight: bold;}
