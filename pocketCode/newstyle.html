@@ -1,0 +1,47 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="./codebubble.js"></script>
+<link id="codebubbleCSS" type="text/css" rel="stylesheet" href="./codebubble.css">
+</head>
+<body style="background:#FFFFFF;">
+
+<!-- trigger element. a regular workable link -->
+<div style="top:70%; left:50%; position:absolute;">
+<a id="download_now">Download now</a>
+</div> 
+
+<span class="bubble"> <!-- start code bubble -->
+  <div id="tooltipheader">
+    <table border="0" style="width:90%;">
+      <tr>
+      <td>
+      Tab:
+      </td>
+      <td>
+      <select id="syntaxcategory" style="width:200px;" onclick="$('#download_now').goTo();" >
+      <option value="./SyntaxBlocks/python/statements.html">Statements</option>
+      <option value="./SyntaxBlocks/python/expressions.html">Expressions</option>
+      <option value="./SyntaxBlocks/python/functions.html">Functions</option>
+      <option value="./SyntaxBlocks/python/variables.html">Variables</option>
+      </select>
+      </td>
+      </tr>
+    </table>
+  </div>
+<div id="tooltippanel">
+</div>
+</span> <!-- end code bubble -->
+
+<script>
+  /*new tooltip script*/
+  $('#download_now').mouseover(function(e) {
+	  
+	  $('.bubble').css('top', $('#download_now').offset().top-135 );
+	  $('.bubble').css('left', $(this).offset().left-70 );
+	  $('.bubble').css('display','block');
+	  $('.span.bubble:after').css('left', $(this).offset().left);})
+</script>
+
+</body>
+</html>

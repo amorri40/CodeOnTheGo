@@ -1,0 +1,35 @@
+/* iphone auto zoom */
+input[type='text'],input[type='number'],textarea,select {font-size:16px;}
+
+/*tooltip bubble (from http://csstooltip.com/)*/
+span.bubble {
+      position: absolute;
+      width: 310px;
+      height: 120px;
+      line-height: 10px;
+      padding: 5px;
+      font-size: 14px;
+      text-align: center;
+      color: rgb(255, 255, 255);
+      background: rgba(0, 0, 0, 0.3);
+      border: 0px solid rgb(255, 255, 255);
+      border-radius: 5px;
+      text-shadow: rgba(0, 0, 0, 0.0976563) 1px 1px 1px;
+      box-shadow: rgba(0, 0, 0, 0.0976563) 1px 1px 2px 0px;
+	  display:none;
+}
+
+span.bubble:after { /*arrow*/
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-width: 10px;
+      border-style: solid;
+      border-color: rgba(0, 0, 0, 0.3) transparent transparent transparent; /* arrow direction */
+      top: 100%; /* top:-20*/
+      left: 25%;
+}
+
+td {color:white; opacity:0.5;}
+select {opacity:0.5;}
