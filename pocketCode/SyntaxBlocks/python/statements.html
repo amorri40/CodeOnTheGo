@@ -1,1 +1,46 @@
-Hello
+<table border="0" style="width:90%;">
+<tr>
+  <td >
+   <select id="python_statements_line" style="width:90px;" onclick="window._bubble_current.goTo();" onChange="window[this.options[this.selectedIndex].value](); this.selectedIndex=0;">
+      <option value="void">Lines</option>
+      <option value="newline">New Line below</option>
+      <option value="void">Delete Current Line</option>
+      <option value="void">Select current Line</option>
+      <option value="void">Add Line to selection</option>
+      <option value="void">Copy Line</option>
+      <option value="void">Cut Line</option>
+      <option value="void">Paste under this line</option>
+      <option value="void">Paste above this line</option>
+    </select>
+  </td>
+  <td>
+  <select id="python_statements_az" style="width:90px;" onclick="window._bubble_current.goTo();" onChange="window[this.options[this.selectedIndex].value](); this.selectedIndex=0;">
+      <option value="void">A-Z Statements</option>
+      <option value="print_statement">print message to output</option>
+      </select>
+  </td>
+ </tr>
+</table>
+<script>
+
+function python_statements_action(el) {
+	 window[el.options[el.selectedIndex].value](); //call the functionname stored in the value of each option
+	   el.selectedIndex=0;
+}
+
+/* initial setup when document loads */
+$(document).ready(function() {
+//add iphone click wheel script to each select element	
+ $("#python_statements_line").quickChange(function() { python_statements_action(this);});
+ $("#python_statements_az").quickChange(function() { python_statements_action(this);}); 
+});
+
+
+/* Functions to modify source*/
+function print_statement() {
+	if (window._bubble_current_type!="EOL") {alert("doesn't work for non EOL"); return 0;}
+	var print_keyword = document.createElement('print_statement');
+	print_keyword.innerHTML='<span class="cm-keyword">print </span> <span class="unknown-expression">??? </span>';
+	insertBefore(window._bubble_current,print_keyword);
+}
+</script>

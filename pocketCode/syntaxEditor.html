@@ -6,15 +6,10 @@
     <link rel="stylesheet" href="../pocketCode/lib/codemirror.css">
     <script src="../pocketCode/lib/codemirror.js"></script>
     <script src="../pocketCode/lib/util/runmode.js"></script>
-    <!--<script src="../mode/xml/xml.js"></script>-->
     <script src="../pocketCode/mode/python/python.js"></script>
-    <!--<link rel="stylesheet" href="../doc/docs.css">-->
-    
     <!-- end codemirror includes -->
     
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    
-    
     
     <!-- code bubble includes -->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
@@ -22,14 +17,8 @@
       <link id="codebubbleCSS" type="text/css" rel="stylesheet" href="./codebubble.css">
     <!-- End code bubble includes -->
     
-    <!-- Dialog scripts -->
-      <!--<script type="text/javascript" src="scripts/jquery.js"></script>-->
-      <script type="text/javascript" src="scripts/dialog.jquery.js"></script>
-      <script type="text/javascript" src="scripts/scripts.js"></script>
-    <!-- End dialog scripts -->
-    
   </head>
-  <body onLoad="doHighlight(); createDialogs(); createCodeBubble();" style=" width: 100%; overflow-x:auto; margin-top:0px; margin-left:4px; margin-bottom:0px;">
+  <body onLoad="doHighlight(); createCodeBubble();" style=" width: 100%; overflow-x:auto; margin-top:0px; margin-left:4px; margin-bottom:0px;">
     
     <pre id="output" class="cm-s-default" style="width: 100%; height:100%;"></pre>
     
@@ -138,45 +127,28 @@ else: print "Finished updating "+g_packageToInstall
 
 
 <!-- functions for code editing -->
-<script>function insertAfter(referenceNode, newNode) {
-    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
-}
+<script>
 
 function newline() {
 	var el = document.createElement('line');
 	var brel = document.createElement('br'); 
-	el.innerHTML="<span class='newline' onClick='window.thevalue=this;'> {EOL}</span>";
-	insertAfter(window.thevalue, brel);
+	el.innerHTML="<span class='newline'> {EOL}</span>";
+	insertAfter(window._bubble_current.parentNode, brel);
+	insertAfter(brel,el);
 	
-	 insertAfter(brel,el);
-	 $(el).touchDialog('#newline');
+	 $(el).click(function(e) {
+	   clickBubbleForElement(this,"EOL",window._bubble_newline_index);
+	});	
 	}
 
 </script>
 
 <!-- Dialog data -->
 <div class="mainContainer" style="visibility:hidden;">
-		<ul id="comment">
-			<li><a href="javascript:alert('Social site pressed')">Edit Comment</a></li>
-			<li><a href="javascript:alert('Say it! pressed')">Delete Comment</a></li>
-			<li><a href="javascript:alert('Email pressed')">Insert code Before</a></li>
-            <li><a href="javascript:alert('Email pressed')">Insert New Line underneath</a></li>
-		</ul>
 		<ul id="string">
 			<li><a href="javascript:window.thevalue.innerHTML=window.thevalue.innerHTML.charAt(0)+window.thevalue.innerHTML.charAt(1)+prompt('Editing: '+window.thevalue.innerHTML,window.thevalue.innerHTML.substring(2,window.thevalue.innerHTML.length-1))+window.thevalue.innerHTML.charAt(window.thevalue.innerHTML.length-1)">Edit String</a></li>
             <li><a href="javascript:alert('View pressed')">Change to...</a></li>
 		</ul>
-		<ul id="socialLinks">
-			<li><a href="javascript:alert('Profile pressed')">View profile</a></li>
-			<li><a href="javascript:alert('Follow pressed')">Follow user</a></li>
-		</ul>
-        
-        <ul id="newline">
-        <li><a href="javascript:alert('Add pressed')">Add syntax</a></li>
-        <li><a href="javascript:alert('Delete pressed')">Delete Line</a></li>
-        <li><a href="javascript:newline()">New Line Below</a></li>
-        </ul>
-        
 </div>
 <!-- End of Dialog Data -->
 
@@ -202,17 +174,6 @@ function newline() {
   <div id="tooltippanel">
   </div>
 </span>
-<script>
-function createCodeBubble() {
-  /*new tooltip script*/
-  $('.cm-variable').mouseover(function(e) {
-	  window._bubble_current=$(this);
-	  $('.bubble').css('top', $(this).offset().top-135 );
-	  $('.bubble').css('left', $(this).offset().left-70 );
-	  $('.bubble').css('display','block');
-	  $('.span.bubble:after').css('left', $(this).offset().left);})
-}
-</script>
 <!-- End of CodeBubble Data -->
 
 <a href="javascript:void(0);" onClick="jsTouch.loadPage('pocketCode/pythonExSettings.html', { transition: 'slide-left' });" class="openOptions">Go Back</a>

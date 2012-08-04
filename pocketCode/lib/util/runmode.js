@@ -6,7 +6,7 @@ CodeMirror.runMode = function(string, modespec, callback, options) {
     var node = callback, accum = [], col = 0;
     callback = function(text, style) {
       if (text == "\n") {
-        accum.push("<span class='newline' onClick='window.thevalue=this;'> {EOL}</span></line><br><line>");
+        accum.push("<span class='newline'>{EOL}</span></line><br><line>");
         col = 0;
         return;
       }
@@ -26,15 +26,17 @@ CodeMirror.runMode = function(string, modespec, callback, options) {
           for (var i = 0; i < size; ++i) escaped += " ";
           pos = idx + 1;
         }
-      }
+      } // end for (var pos = 0;;) 
 	var codestring=escaped.replace(/\'/g,"");
 	//console.log(codestring);
 	codestring=codestring;
-      if (style) 
-        accum.push("<span class=\"cm-" + CodeMirror.htmlEscape(style) + "\" onClick='window.thevalue=this;'\> " + escaped + "</span>"); //ali added the onClick
-		
+      if (style) {
+		  var _space="";
+		  //if (escaped.substring(0,1)!=".") _space=" ";
+        accum.push("<span class=\"cm-" + CodeMirror.htmlEscape(style) + "\" \>"+ _space + escaped + "</span>"); //ali added the onClick
+	  }
       else
-        accum.push(escaped);
+        accum.push("<indentation id='indentation' num='"+escaped.length+"'>"+escaped+"</indentation>");
     }
   }
   var lines = CodeMirror.splitLines(string), state = CodeMirror.startState(mode);

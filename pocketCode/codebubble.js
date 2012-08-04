@@ -1,9 +1,10 @@
+/* Global variables */
+window._bubble_newline_index=2; //which category to select when an element of this type is selected
+window._bubble_variable_index=4;
+
 /*get the data from a webpage*/
 function loadPage(name,el) {
-	var returndata;
-$.get(name, function(data){
-el.innerHTML=data;
-});
+	$(el).load(name);
 }
 
 /* Manually polling the selected index function for iphone Thanks to InvisibleBacon on StackOverflow */
@@ -44,5 +45,40 @@ $.fn.quickChange = function(handler) {
 $(document).ready(function() {loadPage("./SyntaxBlocks/python/statements.html", document.getElementById('tooltippanel'));
 	   $("#syntaxcategory").quickChange(function() { 
 	   loadPage(this.options[this.selectedIndex].value, document.getElementById('tooltippanel'));
-	   });
+	   });  
 });
+
+
+function createCodeBubble() {
+  /*new tooltip script*/
+  $('.cm-variable').mouseover(function(e) {
+	  clickBubbleForElement(this,"VAR",window._bubble_variable_index);
+  });
+	  
+$('.newline').click(function(e) {
+	   clickBubbleForElement(this,"EOL",window._bubble_newline_index);
+	});	  
+} //end createCodeBubble
+
+function clickBubbleForElement(el,type,catindex) {
+	  window._bubble_current=el;
+	  window._bubble_current_type=type;
+	  $("#syntaxcategory")[0].selectedIndex=catindex;
+	  showBubble(el);
+	}
+
+function showBubble(el) {
+	$('.bubble').css('top', $(el).offset().top-135 );
+	  $('.bubble').css('left', $(el).offset().left-70 );
+	  $('.bubble').css('display','block');
+	  $('.span.bubble:after').css('left', $(el).offset().left);
+	}
+	
+/* InsertAfter inserts a node after another node */	
+function insertAfter(referenceNode, newNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
+
+function insertBefore(referenceNode, newNode) {
+	referenceNode.parentNode.insertBefore(newNode, referenceNode);
+}
