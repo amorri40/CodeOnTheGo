@@ -1,13 +1,19 @@
 /* Global variables */
 window._bubble_newline_index=2; //which category to select when an element of this type is selected
 window._bubble_variable_index=4;
+window._bubble_string_index=4;
+window._bubble_keyword_index=1;
+
+/* check which browser */
+var agent = navigator.userAgent;
+var isIphone = ((agent.indexOf('iPhone') != -1) || (agent.indexOf('iPod') != -1)) ;
 
 /*get the data from a webpage*/
 function loadPage(name,el) {
 	$(el).load(name);
 }
 
-/* Manually polling the selected index function for iphone Thanks to InvisibleBacon on StackOverflow */
+/* iPhone Manually polling the selected index function for iphone Thanks to InvisibleBacon on StackOverflow */
 $.fn.quickChange = function(handler) {
     return this.each(function() {
         var self = this;
@@ -29,7 +35,8 @@ $.fn.quickChange = function(handler) {
 //scroll to element script
 (function($) {
 	  $.fn.goTo = function() {
-		  var scrollX = window.pageXOffset; var scrollY = window.pageYOffset;
+		  //var scrollX = window.pageXOffset; var scrollY = window.pageYOffset;
+if (isIphone) {
 		  if (window.orientation == 0) { //portrait
 		  var left=$(this).offset().left-70;
 		  if (left<0) left=0;
@@ -38,18 +45,24 @@ $.fn.quickChange = function(handler) {
 		  else {
 			  window.scrollTo($(this).offset().left-70,$(this).offset().top-85); //set landscape scroll
 			  }
+} //end if iphone
+else {
+	//don't scroll
+	}
 		  return this; // for chaining...
 	  }
   })(jQuery);
   
 /* load the statements page initially */
-$(document).ready(function() {loadPage("./SyntaxBlocks/python/statements.html", document.getElementById('tooltippanel'));
+$(document).ready(function() {
+	loadPage("./SyntaxBlocks/python/statements.html", document.getElementById('tooltippanel'));
 	   $("#syntaxcategory").quickChange(function() { 
 	   loadPage(this.options[this.selectedIndex].value, document.getElementById('tooltippanel'));
 	   });  
 });
 
 
+/*create code bubble used on page load*/
 function createCodeBubble() {
   /*new tooltip script*/
   $('.cm-variable').click(function(e) {
@@ -57,14 +70,42 @@ function createCodeBubble() {
   });
 	  
 $('.newline').click(function(e) {
-	   clickBubbleForElement(this,"EOL",window._bubble_newline_index);
-	});	  
+	   clickBubbleForElement(this,"Line",window._bubble_newline_index);
+	});	
+	
+$('.cm-string').click(function(e) {
+	   clickBubbleForElement(this,"String",window._bubble_string_index);
+	});
+$('.cm-number').click(function(e) {
+	   clickBubbleForElement(this,"Number",window._bubble_string_index);
+	});
+	
+$('.cm-keyword').click(function(e) {
+	   clickBubbleForElement(this,"Statement",window._bubble_keyword_index);
+	});
+	
+$('.cm-operator').click(function(e) {
+	   clickBubbleForElement(this,"Operator",window._bubble_keyword_index);
+	});
+	
+	$('.cm-builtin').click(function(e) {
+	   clickBubbleForElement(this,"Function",window._bubble_keyword_index);
+	});
+	
+	$('.cm-comment').click(function(e) {
+	   clickBubbleForElement(this,"Comment",window._bubble_keyword_index);
+	});
+	
+  
 } //end createCodeBubble
 
 function clickBubbleForElement(el,type,catindex) {
 	  window._bubble_current=el;
 	  window._bubble_current_type=type;
-	  $("#syntaxcategory")[0].selectedIndex=catindex;
+	 
+	  $("#syntaxcategory")[0].options[4].text="Edit "+type;
+	  $("#syntaxcategory")[0].selectedIndex=4;//catindex;
+	  loadPage($("#syntaxcategory")[0].options[4].value, document.getElementById('tooltippanel'));
 	  showBubble(el);
 	}
 
@@ -132,3 +173,28 @@ function newline(inden) {
 	   clickBubbleForElement(this,"EOL",window._bubble_newline_index);
 	});	
 }
+
+function goToNextElement() {
+	/*var next=window._bubble_current.nextSibling;
+	if (next.className==="indentation") next = next.nextSibling
+	if (next === null) { //if its null it could be at the end of the line
+	    if (window._bubble_current.parentNode.nextSibling.nodeName==="BR")
+		next = window._bubble_current.parentNode.nextSibling.firstChild;
+		}
+		if (next.nextSibling === null) { return -1;} //unknown
+	$(next).click();*/
+	$(getNext(window._bubble_current)).click();
+} //end goToNextElement
+
+function getNext(el,child) {
+	var next;
+	if (child) next=el; //if its a line we pass in the first child
+	else next=el.nextSibling;
+	if (next === null) return getNext(el.parentNode.nextSibling,false);
+	if (next.className==="indentation") return getNext(next,false);
+	if (next.nodeName==="BR") return getNext(next,false);
+	if (next.nodeName==="LINE") return getNext(next.firstChild,true);
+	
+	console.log(next.nodeName+" class:"+next.className);
+	return next;
+	}

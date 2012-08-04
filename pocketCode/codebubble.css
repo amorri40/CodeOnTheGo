@@ -31,7 +31,7 @@ span.triangle { //arrow
       left: 5%;
 }
 
-td {color:white; opacity:0.5;}
+td {color:black; opacity:0.8;}
 select {opacity:1;}
 
 .unknown-expression { 
@@ -44,3 +44,4 @@ color: white;
     width: 100%;
     opacity: 0.1;
 	}
+button {border: 1px solid;}

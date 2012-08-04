@@ -124,32 +124,23 @@ if g_showOnly: print "Finished showing all packages for category: "+g_packageToS
 else: print "Finished updating "+g_packageToInstall
 </textarea>
 
-<!-- Dialog data -->
-<div class="mainContainer" style="visibility:hidden;">
-		<ul id="string">
-			<li><a href="javascript:window.thevalue.innerHTML=window.thevalue.innerHTML.charAt(0)+window.thevalue.innerHTML.charAt(1)+prompt('Editing: '+window.thevalue.innerHTML,window.thevalue.innerHTML.substring(2,window.thevalue.innerHTML.length-1))+window.thevalue.innerHTML.charAt(window.thevalue.innerHTML.length-1)">Edit String</a></li>
-            <li><a href="javascript:alert('View pressed')">Change to...</a></li>
-		</ul>
-</div>
-<!-- End of Dialog Data -->
-
 <!-- CodeBubble Data -->
 <span class="bubble"> <!-- start code bubble -->
 <span class="triangle"></span>
   <div id="tooltipheader">
     <table border="0" style="width:90%;">
       <tr>
-      <td>
-      Tab:
-      </td>
+      <td><button type="button" onclick="" style="width:45px; height:40px;">&lt;</button></td>
       <td>
       <select id="syntaxcategory" style="width:200px;" onclick="$(window._bubble_current).goTo();" >
       <option value="./SyntaxBlocks/python/statements.html">Statements</option>
       <option value="./SyntaxBlocks/python/expressions.html">Expressions</option>
       <option value="./SyntaxBlocks/python/functions.html">Functions</option>
       <option value="./SyntaxBlocks/python/variables.html">Variables</option>
+      <option id="edit_category" value="./SyntaxBlocks/python/edit.html">Edit</option>
       </select>
       </td>
+      <td><button type="button" onclick="goToNextElement()" style="width:45px; height:40px;">&gt;</button></td>
       </tr>
     </table>
   </div>
