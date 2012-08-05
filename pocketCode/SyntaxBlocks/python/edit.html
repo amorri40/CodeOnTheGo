@@ -22,6 +22,7 @@
 var classname=window._bubble_current.className;
 if (classname==="cm-string") {load_edit_string();}
 else if (classname==="cm-keyword") {load_edit_statement();}
+else if (classname==="cm-comment") {load_edit_comment();}
 
 
 function load_edit_string() {
@@ -33,11 +34,25 @@ function load_edit_string() {
 function load_edit_statement() {
 	$('#edit_cell1')[0].innerHTML='<button type="button" onclick="" style="width:90px; height:35px;">change to..</button>';
 	$('#edit_cell2')[0].innerHTML='<button type="button" onclick="remove_statement()" style="width:90px; height:35px;">Delete</button>';
-	$('#edit_cell3')[0].innerHTML='<button type="button" onclick="" style="width:90px; height:35px;">Comment out</button>';
+	$('#edit_cell3')[0].innerHTML='<button type="button" onclick="edit_comment_out()" style="width:90px; height:35px;">Comment out</button>';
 	$('#edit_cell4')[0].innerHTML='<button type="button" onclick="" style="width:90px; height:35px;">Copy</button>';
 	$('#edit_cell5')[0].innerHTML='<button type="button" onclick="" style="width:90px; height:35px;">Select</button>';
 	$('#edit_cell4')[0].innerHTML='<button type="button" onclick="" style="width:90px; height:35px;">Add to Selection</button>';
 	}	
+	
+function load_edit_comment() {
+if (window._bubble_current.parentNode.tagName==="STATEMENT" && window._bubble_current.parentNode.getAttribute('commented')) 
+		$('#edit_cell3')[0].innerHTML='<button type="button" onclick="edit_uncomment_out()" style="width:90px; height:35px;">UnComment out</button>';
+}
+	
+	
+	
+function createSpan(type,html) {
+	var span = document.createElement("span");
+	  span.className=type;
+	  span.innerHTML=html;
+	  return span;
+}
 	
 	
 function edit_string() {
@@ -53,4 +68,38 @@ function remove_statement() {
 	if (el.parentNode.tagName==="STATEMENT") el.parentNode.parentNode.removeChild(el.parentNode);
 	//TODO and if for line statement
 	}
+	
+function edit_comment_out() {
+   var el=window._bubble_current;
+   var parent=el.parentNode;
+   
+   var code="";
+   while (el!=null) {
+   	code+=el.innerHTML;
+	var next=el.nextSibling;
+	el.style.display='none';
+	el=next;
+   }
+   console.log(code);
+  
+    var span = createSpan('cm-comment','# '+code);
+	parent.appendChild(span);
+	parent.setAttribute('commented',true)
+	goToNextElement();
+}
+
+function edit_uncomment_out() {
+	var el=window._bubble_current.parentNode.firstChild;
+    var parent=el.parentNode;
+	
+	goToNextElement();
+	
+	while (el!=null) {
+		el.style.display='inline';
+		el=el.nextSibling;
+   }
+   parent.removeChild(parent.getElementsByClassName('cm-comment')[0]);
+   parent.setAttribute('commented',false)
+}
+
 </script>

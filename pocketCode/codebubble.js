@@ -203,9 +203,10 @@ function getNext(el,child) {
 	else next=el.nextSibling;
 	if (next === null) return getNext(el.parentNode,false);
 	if (next.className==="indentation") return getNext(next,false);
-	if (next.nodeName==="BR") return getNext(next,false);
+	if (next.nodeName==="BR") return getNext(next,false); //ignore the br tag
 	if (next.nodeName==="LINE") return getNext(next.firstChild,true);
 	if (next.nodeName==="STATEMENT") return getNext(next.firstChild,true);
+	if (next.style.display==='none') return getNext(next,false); //ignore hidden elements
 	
 	console.log(next.nodeName+" class:"+next.className);
 	return next;
@@ -220,6 +221,7 @@ function getPrevious(el,child) {
 	if (prev.nodeName==="BR") return getPrevious(prev,false);
 	if (prev.nodeName==="LINE") return getPrevious(prev.lastChild,true);
 	if (prev.nodeName==="STATEMENT") return getPrevious(prev.lastChild,true);
+	if (prev.style.display==='none') return getPrev(prev,false); //ignore hidden elements
 	
 	console.log(prev.nodeName+" class:"+prev.className);
 	return prev;
