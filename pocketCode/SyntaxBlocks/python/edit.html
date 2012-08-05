@@ -36,29 +36,24 @@ function load_edit_statement() {
 	$('#edit_cell2')[0].innerHTML='<button type="button" onclick="remove_statement()" style="width:90px; height:35px;">Delete</button>';
 	$('#edit_cell3')[0].innerHTML='<button type="button" onclick="edit_comment_out()" style="width:90px; height:35px;">Comment out</button>';
 	$('#edit_cell4')[0].innerHTML='<button type="button" onclick="" style="width:90px; height:35px;">Copy</button>';
-	$('#edit_cell5')[0].innerHTML='<button type="button" onclick="" style="width:90px; height:35px;">Select</button>';
-	$('#edit_cell4')[0].innerHTML='<button type="button" onclick="" style="width:90px; height:35px;">Add to Selection</button>';
+	$('#edit_cell5')[0].innerHTML='<select id="python_edit_statement_selection" style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_expression_action(this);"><option value="">Select</option><option value="">Add to Selection</option></select>';
+	$('#edit_cell6')[0].innerHTML='<select id="python_edit_statement_spacing" style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_expression_action(this);"><option value="">Move Right</option><option value="">Move Left</option></select>';
 	}	
 	
 function load_edit_comment() {
 if (window._bubble_current.parentNode.tagName==="STATEMENT" && window._bubble_current.parentNode.getAttribute('commented')) 
-		$('#edit_cell3')[0].innerHTML='<button type="button" onclick="edit_uncomment_out()" style="width:90px; height:35px;">UnComment out</button>';
-}
-	
-	
-	
-function createSpan(type,html) {
-	var span = document.createElement("span");
-	  span.className=type;
-	  span.innerHTML=html;
-	  return span;
+		$('#edit_cell3')[0].innerHTML='<button type="button" class="bubblebutton" onclick="edit_uncomment_out()">UnComment out</button>';
+else { //normal comment
+		$('#edit_cell1')[0].innerHTML='<button type="button" class="bubblebutton" onclick="edit_comment_edit()">Edit</button>';
+		$('#edit_cell2')[0].innerHTML='<button type="button" class="bubblebutton" onclick="edit_comment_delete()">Delete</button>';
+	}
 }
 	
 	
 function edit_string() {
 	var html = window._bubble_current.innerHTML;
 	var newhtml =html.charAt(0);
-	newhtml+=prompt('Editing: '+html, html.substring(1,html.length-1))+html.charAt(html.length-1);
+	newhtml+=prompt('Editing: '+html, html.substring(1,html.length-1)) + html.charAt(html.length-1);
 	window._bubble_current.innerHTML=newhtml;
 }	
 
@@ -68,6 +63,10 @@ function remove_statement() {
 	if (el.parentNode.tagName==="STATEMENT") el.parentNode.parentNode.removeChild(el.parentNode);
 	//TODO and if for line statement
 	}
+	
+/* 
+Comment functions
+*/
 	
 function edit_comment_out() {
    var el=window._bubble_current;
@@ -102,4 +101,15 @@ function edit_uncomment_out() {
    parent.setAttribute('commented',false)
 }
 
+/* End comment functions */
+function edit_comment_edit() {
+	var html = window._bubble_current.innerHTML;
+	var newhtml =html.charAt(0); //new html will have #
+	newhtml+=prompt('Editing: '+html, html.substring(1,html.length));
+	window._bubble_current.innerHTML=newhtml; //change the html of the current element to the new comment
+}
+
+function edit_comment_delete() {
+	delete_current();
+}
 </script>

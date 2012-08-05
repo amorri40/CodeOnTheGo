@@ -18,6 +18,7 @@
       <option value="void">A-Z Statements</option>
       <option value="print_statement">print message to output</option>
       <option value="if_statement">if expression is true</option>
+      <option value="statement_add_comment">Comment #This is for humans</option>
       </select>
   </td>
  </tr>
@@ -32,8 +33,10 @@ function python_statements_action(el) {
 /* initial setup when document loads */
 $(document).ready(function() { //quick change is for iphone not desktop
 //add iphone click wheel script to each select element	
+if (isIphone) {
  $("#python_statements_line").quickChange(function() { python_statements_action(this);});
  $("#python_statements_az").quickChange(function() { python_statements_action(this);}); 
+}
 });
 
 /* insert_statement creates the elements only if it is an EOL (statements can't be used as expressions)*/
@@ -44,7 +47,7 @@ function insert_statement(statementType,statementHTML,selectChild) {
 	statementelement.innerHTML=statementHTML;
 	insertBefore(window._bubble_current,statementelement);
 	if (selectChild!=-1) { //select one of the child nodes (normally used for unknown expressions added by the statement
-	$(statementelement.childNodes[selectChild]).click();	
+		$(statementelement.childNodes[selectChild]).click();	
 	}
 }
 
@@ -64,4 +67,11 @@ function statement_newline() {
 	newline();
 	goToNextElement();
 	}
+	
+function statement_add_comment() {
+	var comment=prompt("Enter the comment line:","");
+	var span = createSpan('cm-comment','# '+comment);
+	insertBeforeCurrent(span);
+	goToPreviousElement(); //goto the comment that was created
+}
 </script>

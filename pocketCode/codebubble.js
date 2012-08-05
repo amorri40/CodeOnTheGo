@@ -189,6 +189,10 @@ function newline(inden) {
 	});	
 }
 
+/*
+Moving the code bubble functions
+*/
+
 function goToNextElement() {
 	$(getNext(window._bubble_current)).click();
 } //end goToNextElement
@@ -226,3 +230,25 @@ function getPrevious(el,child) {
 	console.log(prev.nodeName+" class:"+prev.className);
 	return prev;
 	}
+/* 
+end moving code bubble functions
+*/
+	
+/* Convenience functions for editing */	
+	
+function createSpan(type,html) {
+	var span = document.createElement("span");
+	  span.className=type;
+	  span.innerHTML=html;
+	  return span;
+}
+
+function insertBeforeCurrent(el) {
+	insertBefore(window._bubble_current,el);
+}
+
+function delete_current() {
+	var currentNode=window._bubble_current; //keep the current node because we are about to change
+	goToPreviousElement(); //change to previous element (since it won't move, unlike the next element)
+	currentNode.parentNode.removeChild(currentNode);
+}

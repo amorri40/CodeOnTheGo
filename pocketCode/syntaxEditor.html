@@ -17,18 +17,19 @@
       <link id="codebubbleCSS" type="text/css" rel="stylesheet" href="./codebubble.css">
     <!-- End code bubble includes -->
     
-  </head>
-  <body onLoad="doHighlight(); createCodeBubble();" style=" width: 100%; overflow-x:auto; margin-top:0px; margin-left:4px; margin-bottom:0px;">
+</head>
+
+<body onLoad="var start = new Date().getTime(); doHighlight(); createCodeBubble(); var end= new Date().getTime()-start; console.log('time taken to load:'+end+'ms');" style=" width: 100%; overflow-x:auto; margin-top:0px; margin-left:4px; margin-bottom:0px;">
     
-    <pre id="output" class="cm-s-default" style="width: 100%; height:100%;"></pre>
+ <pre id="output" class="cm-s-default" style="width: 100%; height:100%;"></pre>
     
-<script>
+ <script>
   function doHighlight() {
 	CodeMirror.runMode(document.getElementById("code").value, "text/x-python",
 					   document.getElementById("output"));
   }
-</script>
-<textarea id="code" style="width: 0px; height: 0px; visibility:hidden; overflow:hidden; padding: 0;">
+ </script>
+ <textarea id="code" style="width: 0px; height: 0px; visibility:hidden; overflow:hidden; padding: 0;">
 #!/usr/bin/python
 
 
