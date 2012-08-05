@@ -161,6 +161,8 @@ span.cm-string-2 {color: #f50; text-shadow:none;}
 #cm-s-default span.cm-link {color: #00c; text-shadow:none;}
 
 #cm-s-default span.newline {color: #00F;}
+span.cm-delimiter {}
+span.cm-module {color: #09F;}
 
 span.cm-header, span.cm-strong {font-weight: bold;}
 span.cm-em {font-style: italic;}

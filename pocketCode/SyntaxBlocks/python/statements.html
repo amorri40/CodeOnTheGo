@@ -3,7 +3,7 @@
   <td >
    <select id="python_statements_line" style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="window[this.options[this.selectedIndex].value](); this.selectedIndex=0;">
       <option value="void">Lines</option>
-      <option value="newline">New Line below</option>
+      <option value="statement_newline">New Line below</option>
       <option value="void">Delete Current Line</option>
       <option value="void">Select current Line</option>
       <option value="void">Add Line to selection</option>
@@ -37,20 +37,31 @@ $(document).ready(function() { //quick change is for iphone not desktop
 });
 
 /* insert_statement creates the elements only if it is an EOL (statements can't be used as expressions)*/
-function insert_statement(statementType,statementHTML) {
-	if (window._bubble_current_type!="EOL") {alert("You can only place statements at the start or end of a line"); return 0;}
-	var statementelement = document.createElement(statementType);
+function insert_statement(statementType,statementHTML,selectChild) {
+	//if (window._bubble_current_type!="Line") {alert("You can only place statements at the start or end of a line"); return 0;}
+	var statementelement = document.createElement("statement");
+	statementelement.className=statementType;
 	statementelement.innerHTML=statementHTML;
 	insertBefore(window._bubble_current,statementelement);
+	if (selectChild!=-1) { //select one of the child nodes (normally used for unknown expressions added by the statement
+	$(statementelement.childNodes[selectChild]).click();	
+	}
 }
 
 /* Functions to modify source*/
 function print_statement() {
-	insert_statement('print_statement','<span class="cm-keyword">print</span> <span class="unknown-expression">???</span>');
+	insert_statement('print_statement','<span class="cm-keyword">print</span><indentation class="indentation" num="1"> </indentation><span class="unknown-expression">???</span>',2);
 }
 
 function if_statement() {
-	insert_statement('if_statement','<span class="cm-keyword">if</span> <span class="unknown-expression">???</span> : ');
+	insert_statement('if_statement','<span class="cm-keyword">if</span><indentation class="indentation" num="1"> </indentation><span class="unknown-expression">???</span><indentation class="indentation" num="1"> </indentation><span class="cm-delimiter">:</span><indentation class="indentation" num="1"> </indentation>',2);
+	
 	newline(4);
 }
+
+function statement_newline() {
+	if (window._bubble_current.parentNode.firstChild.tagName==="INDENTATION") {}
+	newline();
+	goToNextElement();
+	}
 </script>

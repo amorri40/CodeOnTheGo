@@ -50,5 +50,5 @@ CodeMirror.runMode = function(string, modespec, callback, options) {
     }
   }
   if (isNode)
-    node.innerHTML = accum.join("");
+    node.innerHTML = "<line>"+accum.join("")+"<br></line>";
 };

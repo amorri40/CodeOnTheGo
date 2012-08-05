@@ -19,13 +19,25 @@
 </table>
 
 <script>
-if (window._bubble_current.className==="cm-string") {load_edit_string();}
+var classname=window._bubble_current.className;
+if (classname==="cm-string") {load_edit_string();}
+else if (classname==="cm-keyword") {load_edit_statement();}
+
+
 function load_edit_string() {
 	$('#edit_cell1')[0].innerHTML='<button type="button" onclick="edit_string();" style="width:45px; height:40px;">Edit Text</button>';
 	$('#edit_cell2')[0].innerHTML='<button type="button" onclick="" style="width:90px; height:40px;">Change to expression</button>';
 	$('#edit_cell3')[0].innerHTML='<button type="button" onclick="" style="width:45px; height:40px;">Split Text</button>';
 	}
-	
+
+function load_edit_statement() {
+	$('#edit_cell1')[0].innerHTML='<button type="button" onclick="" style="width:90px; height:35px;">change to..</button>';
+	$('#edit_cell2')[0].innerHTML='<button type="button" onclick="remove_statement()" style="width:90px; height:35px;">Delete</button>';
+	$('#edit_cell3')[0].innerHTML='<button type="button" onclick="" style="width:90px; height:35px;">Comment out</button>';
+	$('#edit_cell4')[0].innerHTML='<button type="button" onclick="" style="width:90px; height:35px;">Copy</button>';
+	$('#edit_cell5')[0].innerHTML='<button type="button" onclick="" style="width:90px; height:35px;">Select</button>';
+	$('#edit_cell4')[0].innerHTML='<button type="button" onclick="" style="width:90px; height:35px;">Add to Selection</button>';
+	}	
 	
 	
 function edit_string() {
@@ -34,4 +46,11 @@ function edit_string() {
 	newhtml+=prompt('Editing: '+html, html.substring(1,html.length-1))+html.charAt(html.length-1);
 	window._bubble_current.innerHTML=newhtml;
 }	
+
+function remove_statement() {
+	var el=window._bubble_current;
+	goToPreviousElement();
+	if (el.parentNode.tagName==="STATEMENT") el.parentNode.parentNode.removeChild(el.parentNode);
+	//TODO and if for line statement
+	}
 </script>

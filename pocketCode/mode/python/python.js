@@ -5,7 +5,7 @@ CodeMirror.defineMode("python", function(conf, parserConf) {
         return new RegExp("^((" + words.join(")|(") + "))\\b");
     }
     
-    var singleOperators = new RegExp("^[\\+\\-\\*/%&|\\^~<>!,=]");
+    var singleOperators = new RegExp("^[\\+\\-\\*/%&|\\^~<>!,]");
     var singleDelimiters = new RegExp('^[\\(\\)\\[\\]\\{\\}@,:`=;\\.]');
     var doubleOperators = new RegExp("^((==)|(!=)|(<=)|(>=)|(<>)|(<<)|(>>)|(//)|(\\*\\*))");
     var doubleDelimiters = new RegExp("^((\\+=)|(\\-=)|(\\*=)|(%=)|(/=)|(&=)|(\\|=)|(\\^=))");
@@ -32,9 +32,21 @@ CodeMirror.defineMode("python", function(conf, parserConf) {
     var py2 = {'builtins': ['apply', 'basestring', 'buffer', 'cmp', 'coerce', 'execfile',
                             'file', 'intern', 'long', 'raw_input', 'reduce', 'reload',
                             'unichr', 'unicode', 'xrange', 'False', 'True', 'None'],
-               'keywords': ['exec', 'print']};
+               'keywords': ['exec', 'print'],
+			   'modules': ['__builtin__','__future__','__main__','_winreg','abc','aepack','aetools','aetypes','aifc','al','AL','anydbm','applesingle','argparse','array','ast','asynchat','asyncore','atexit','audioop','autoGIL','base64','BaseHTTPServer','Bastion','bdb','binascii','binhex','bisect','bsddb','buildtools','bz2','calendar','Carbon\\.AE','Carbon\\.AH','Carbon\\.App','Carbon\\.Appearance','Carbon\\.CarbonEvents','Carbon\\.CarbonEvt','Carbon\\.CF','Carbon\\.CG','Carbon\\.Cm','Carbon\\.Components','Carbon\\.ControlAccessor','Carbon\\.Controls','Carbon\\.CoreFounation','Carbon\\.CoreGraphics','Carbon\\.Ctl','Carbon\\.Dialogs','Carbon\\.Dlg','Carbon\\.Drag','Carbon\\.Dragconst','Carbon\\.Events','Carbon\\.Evt','Carbon\\.File','Carbon\\.Files','Carbon\\.Fm','Carbon\\.Folder','Carbon\\.Folders','Carbon\\.Fonts','Carbon\\.Help','Carbon\\.IBCarbon','Carbon\\.IBCarbonRuntime','Carbon\\.Icns','Carbon\\.Icons','Carbon\\.Launch','Carbon\\.LaunchServices','Carbon\\.List','Carbon\\.Lists','Carbon\\.MacHelp','Carbon\\.MediaDescr','Carbon\\.Menu','Carbon\\.Menus','Carbon\\.Mlte','Carbon\\.OSA','Carbon\\.OSAconst','Carbon\\.Qd','Carbon\\.Qdoffs','Carbon\\.QDOffscreen','Carbon\\.Qt','Carbon\\.QuickDraw','Carbon\\.QuickTime','Carbon\\.Res','Carbon\\.Resources','Carbon\\.Scrap','Carbon\\.Snd','Carbon\\.Sound','Carbon\\.TE','Carbon\\.TextEdit','Carbon\\.Win','Carbon\\.Windows','cd','cfmfile','cgi','CGIHTTPServer','cgitb','chunk','cmath','cmd','code','codecs','codeop','collections','ColorPicker','colorsys','commands','compileall','compiler','compiler\\.ast','compiler\\.visitor','ConfigParser','contextlib','Cookie','cookielib','copy','copy_reg','cPickle','cProfile','crypt','cStringIO','csv','ctypes','curses','curses\\.ascii','curses\\.panel','curses\\.textpad','datetime','dbhash','dbm','decimal','DEVICE','difflib','dircache','dis','distutils','distutils\\.archive_util','distutils\\.bcppcompiler','distutils\\.ccompiler','distutils\\.cmd','distutils\\.command','distutils\\.command\\.bdist','distutils\\.command\\.bdist_dumb','distutils\\.command\\.bdist_msi','distutils\\.command\\.bdist_packager','distutils\\.command\\.bdist_rpm','distutils\\.command\\.bdist_wininst','distutils\\.command\\.build','distutils\\.command\\.build_clib','distutils\\.command\\.build_ext','distutils\\.command\\.build_py','distutils\\.command\\.build_scripts','distutils\\.command\\.check','distutils\\.command\\.clean','distutils\\.command\\.config','distutils\\.command\\.install','distutils\\.command\\.install_data','distutils\\.command\\.install_headers','distutils\\.command\\.install_lib','distutils\\.command\\.install_scripts','distutils\\.command\\.register','distutils\\.command\\.sdist','distutils\\.core','distutils\\.cygwinccompiler','distutils\\.debug','distutils\\.dep_util','distutils\\.dir_util','distutils\\.dist','distutils\\.emxccompiler','distutils\\.errors','distutils\\.extension','distutils\\.fancy_getopt','distutils\\.file_util','distutils\\.filelist','distutils\\.log','distutils\\.msvccompiler','distutils\\.spawn','distutils\\.sysconfig','distutils\\.text_file','distutils\\.unixccompiler','distutils\\.util','distutils\\.version','dl','doctest','DocXMLRPCServer','dumbdbm','dummy_thread','dummy_threading','EasyDialogs','email','email\\.charset','email\\.encoders','email\\.errors','email\\.generator','email\\.header','email\\.iterators','email\\.message','email\\.mime','email\\.parser','email\\.utils','encodings\\.idna','encodings\\.utf_8_sig','errno','exceptions','fcntl','filecmp','fileinput','findertools','FL','fl','flp','fm','fnmatch','formatter','fpectl','fpformat','fractions','FrameWork','ftplib','functools','future_builtins','gc','gdbm','gensuitemodule','getopt','getpass','gettext','gl','GL','glob','grp','gzip','hashlib','heapq','hmac','hotshot','hotshot\\.stats','htmlentitydefs','htmllib','HTMLParser','httplib','ic','icopen','imageop','imaplib','imgfile','imghdr','imp','importlib','imputil','inspect','io','itertools','jpeg','json','keyword','lib2to3','linecache','locale','logging','logging\\.config','logging\\.handlers','macerrors','MacOS','macostools','macpath','macresource','mailbox','mailcap','marshal','math','md5','mhlib','mimetools','mimetypes','MimeWriter','mimify','MiniAEFrame','mmap','modulefinder','msilib','msvcrt','multifile','multiprocessing','multiprocessing\\.connection','multiprocessing\\.dummy','multiprocessing\\.managers','multiprocessing\\.pool','multiprocessing\\.sharedctypes','mutex','Nav','netrc','new','nis','nntplib','numbers','operator','optparse','os','os\\.path','ossaudiodev','parser','pdb','pickle','pickletools','pipes','PixMapWrapper','pkgutil','platform','plistlib','popen2','poplib','posix','posixfile','pprint','profile','pstats','pty','pwd','py_compile','pyclbr','pydoc','Queue','quopri','random','re','readline','repr','resource','rexec','rfc822','rlcompleter','robotparser','runpy','sched','ScrolledText','select','sets','sgmllib','sha','shelve','shlex','shutil','signal','SimpleHTTPServer','SimpleXMLRPCServer','site','smtpd','smtplib','sndhdr','socket','SocketServer','spwd','sqlite3','ssl','stat','statvfs','string','StringIO','stringprep','struct','subprocess','sunau','sunaudiodev','SUNAUDIODEV','symbol','symtable','sys','sysconfig','syslog','tabnanny','tarfile','telnetlib','tempfile','termios','test','test\\.test_support','textwrap','thread','threading','time','timeit','Tix','Tkinter','token','tokenize','trace','traceback','ttk','tty','turtle','types','unicodedata','unittest','urllib','urllib2','urlparse','user','UserDict','UserList','UserString','uu','uuid','videoreader','warnings','wave','weakref','webbrowser','whichdb','winsound','wsgiref','wsgiref\\.handlers','wsgiref\\.headers','wsgiref\\.simple_server','wsgiref\\.util','wsgiref\\.validate','xdrlib','xml\\.dom','xml\\.dom\\.minidom','xml\\.dom\\.pulldom','xml\\.etree\\.ElementTree','xml\\.parsers\\.expat','xml\\.sax','xml\\.sax\\.handler','xml\\.sax\\.saxutils','xml\\.sax\\.xmlreader','xmlrpclib','zipfile','zipimport','zlib']
+			   
+			   
+			   
+			   
+			   }; //end of py2
     var py3 = {'builtins': ['ascii', 'bytes', 'exec', 'print'],
                'keywords': ['nonlocal', 'False', 'True', 'None']};
+			   
+	
+	/*To get modules use this Javascript on http://docs.python.org/modindex.html :
+	var tbody = $('.indextable')[0].firstChild;
+	var names=''; for (i=0; i<tbody.childElementCount+25;i++) { var tablerow=tbody.childNodes[i].childNodes[3]; if (tablerow!=null && tablerow.childElementCount>0) {var name_=tablerow.childNodes[1]; if(name_.text && name_.text.length>1) { names+="'"+name_.text.replace(/\./g,'\\\\.')+"',";} } } console.log(''+names);
+	*/
 
     if (!!parserConf.version && parseInt(parserConf.version, 10) === 3) {
         commonkeywords = commonkeywords.concat(py3.keywords);
@@ -47,6 +59,7 @@ CodeMirror.defineMode("python", function(conf, parserConf) {
     }
     var keywords = wordRegexp(commonkeywords);
     var builtins = wordRegexp(commonBuiltins);
+	var modules = wordRegexp(py2.modules);
 
     var indentInfo = null;
 
@@ -125,7 +138,7 @@ CodeMirror.defineMode("python", function(conf, parserConf) {
         
         // Handle operators and Delimiters
         if (stream.match(tripleDelimiters) || stream.match(doubleDelimiters)) {
-            return null;
+            return 'delimiter';
         }
         if (stream.match(doubleOperators)
             || stream.match(singleOperators)
@@ -133,7 +146,7 @@ CodeMirror.defineMode("python", function(conf, parserConf) {
             return 'operator';
         }
         if (stream.match(singleDelimiters)) {
-            return null;
+            return 'delimiter';
         }
         
         if (stream.match(keywords)) {
@@ -143,6 +156,10 @@ CodeMirror.defineMode("python", function(conf, parserConf) {
         if (stream.match(builtins)) {
             return 'builtin';
         }
+		
+		if (stream.match(modules)) {
+		   return 'module';
+		}
         
         if (stream.match(identifiers)) {
             return 'variable';

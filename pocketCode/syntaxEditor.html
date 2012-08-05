@@ -28,10 +28,14 @@
 					   document.getElementById("output"));
   }
 </script>
-
 <textarea id="code" style="width: 0px; height: 0px; visibility:hidden; overflow:hidden; padding: 0;">
 #!/usr/bin/python
-import os, urllib, hashlib, sys,zipfile,shutil, getopt
+
+
+</textarea>
+<textarea id="bigcode" style="width: 0px; height: 0px; visibility:hidden; overflow:hidden; padding: 0;">
+#!/usr/bin/python
+import os, urllib, hashlib, sys,zipfile,shutil, getopt,  xml.dom
 print "Enigma package manager"
 url="https://raw.github.com/enigma-dev/Enigma-packages/master/packages.md5"
 webFile = urllib.urlopen(url)
@@ -130,7 +134,7 @@ else: print "Finished updating "+g_packageToInstall
   <div id="tooltipheader">
     <table border="0" style="width:90%;">
       <tr>
-      <td><button type="button" onclick="" style="width:45px; height:40px;">&lt;</button></td>
+      <td><button type="button" onclick="goToPreviousElement()" style="width:45px; height:40px;">&lt;</button></td>
       <td>
       <select id="syntaxcategory" style="width:200px;" onclick="$(window._bubble_current).goTo();" >
       <option value="./SyntaxBlocks/python/statements.html">Statements</option>

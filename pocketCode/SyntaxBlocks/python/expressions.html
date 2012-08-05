@@ -1,9 +1,9 @@
 <table border="0" style="width:90%;">
 <tr>
   <td >
-    <select id="python_expression_literal" style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="this.selectedIndex=0;">
+    <select id="python_expression_literal" style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_expression_action(this);">
       <option value="volvo">Literal...</option>
-      <option value="saab">String</option>
+      <option value="exp_add_string">String</option>
       <option value="mercedes">Integer</option>
       <option value="audi">Float</option>
       <option value="audi">Long</option>
@@ -11,7 +11,7 @@
     </select>
   </td>
   <td >
-    <select id="python_expression_operator" style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="this.selectedIndex=0;">
+    <select id="python_expression_operator" style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_expression_action(this);">
       <option value="audi">Operators..</option>
       <option value="audi">Addition x+y</option>
       <option value="audi">Subtraction x-y</option>
@@ -30,7 +30,7 @@
     </select>
   </td>
   <td >
-    <select style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="this.selectedIndex=0;">
+    <select style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_expression_action(this);">
       <option value="audi">Comparisons..</option>
       <option value="audi">Equality x==y</option>
       <option value="audi">Inequality x!=y</option>
@@ -48,7 +48,7 @@
 
 <tr>
   <td>
-    <select style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="this.selectedIndex=0;">
+    <select style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_expression_action(this);">
       <option value="audi">Boolean..</option>
       <option value="audi">and (Expression)</option>
       <option value="audi">or (Expression)</option>
@@ -58,7 +58,7 @@
     </select>
   </td>
   <td>
-    <select style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="this.selectedIndex=0;">
+    <select style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_expression_action(this);">
       <option value="audi" disabled="disabled">Other..</option>
       <option value="audi">List creation [expr,...]</option>
       <option value="audi">Dictionary creation {key:expr,...}</option>
@@ -91,10 +91,29 @@
 </table>
 <script>
 
+function insert_expression(expressionType,html) {
+	//if unkown expression replace otherwise insertafter
+	if (window._bubble_current.className==="unknown-expression") {window._bubble_current.className=expressionType; window._bubble_current.innerHTML=html;}
+	else {
+	  var span = document.createElement("span");
+	  span.className=expressionType;
+	  span.innerHTML=html;
+	  insertAfter(window._bubble_current,span);
+	}
+	goToNextElement();//finnaly move along to select the next element
+}
+
+function exp_add_string() {
+  var value=prompt("Enter a string","");
+  insert_expression('cm-string','"'+value+'"'); 
+}
+
 function python_expression_action(el) {
 	 window[el.options[el.selectedIndex].value](); //call the functionname stored in the value of each option
 	   el.selectedIndex=0;
 }
+
+$("#python_expression_literal").quickChange(function() { python_expression_action(this);});
 
 /* initial setup when document loads */
 $(document).ready(function() { //quick change is for iphone not desktop

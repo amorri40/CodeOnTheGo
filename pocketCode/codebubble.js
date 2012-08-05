@@ -1,8 +1,9 @@
 /* Global variables */
-window._bubble_newline_index=2; //which category to select when an element of this type is selected
+window._bubble_newline_index=0; //which category to select when an element of this type is selected
 window._bubble_variable_index=4;
 window._bubble_string_index=4;
-window._bubble_keyword_index=1;
+window._bubble_keyword_index=0;
+window._bubble_expression_index=1;
 
 /* check which browser */
 var agent = navigator.userAgent;
@@ -65,36 +66,50 @@ $(document).ready(function() {
 /*create code bubble used on page load*/
 function createCodeBubble() {
   /*new tooltip script*/
-  $('.cm-variable').click(function(e) {
+  $('#output').delegate('.cm-variable','click',(function(e) {
 	  clickBubbleForElement(this,"VAR",window._bubble_variable_index);
-  });
+  }));
 	  
-$('.newline').click(function(e) {
-	   clickBubbleForElement(this,"Line",window._bubble_newline_index);
-	});	
+//$('.newline').on('click',(function(e) {
+//	   clickBubbleForElement(this,"Line",window._bubble_newline_index);
+//	}));
 	
-$('.cm-string').click(function(e) {
-	   clickBubbleForElement(this,"String",window._bubble_string_index);
-	});
-$('.cm-number').click(function(e) {
-	   clickBubbleForElement(this,"Number",window._bubble_string_index);
-	});
+	$('#output').delegate('.newline', 'click', function() { clickBubbleForElement(this,"Line",window._bubble_newline_index); });	
 	
-$('.cm-keyword').click(function(e) {
-	   clickBubbleForElement(this,"Statement",window._bubble_keyword_index);
-	});
+$('#output').delegate('.cm-string','click',(function(e) {
+	   clickBubbleForElement(this,"String",-1);
+	}));
+$('#output').delegate('.cm-number','click',(function(e) {
+	   clickBubbleForElement(this,"Number",-1);
+	}));
 	
-$('.cm-operator').click(function(e) {
-	   clickBubbleForElement(this,"Operator",window._bubble_keyword_index);
-	});
+$('#output').delegate('.cm-keyword','click',(function(e) {
+	   clickBubbleForElement(this,"Statement",-1);
+	}));
 	
-	$('.cm-builtin').click(function(e) {
-	   clickBubbleForElement(this,"Function",window._bubble_keyword_index);
-	});
+$('#output').delegate('.cm-operator','click',(function(e) {
+	   clickBubbleForElement(this,"Operator",-1);
+	}));
 	
-	$('.cm-comment').click(function(e) {
-	   clickBubbleForElement(this,"Comment",window._bubble_keyword_index);
-	});
+	$('#output').delegate('.cm-builtin','click',(function(e) {
+	   clickBubbleForElement(this,"Function",-1);
+	}));
+	
+	$('#output').delegate('.cm-comment','click',(function(e) {
+	   clickBubbleForElement(this,"Comment",-1);
+	}));
+	
+	$('#output').delegate('.cm-delimiter','click',(function(e) {
+	   clickBubbleForElement(this,"Delimiter",-1);
+	}));
+	
+	/*$('.unknown-expression').click(function(e) {
+	   clickBubbleForElement(this,"Unknown expression",window._bubble_expression_index);
+	});*/
+	
+	$('#output').delegate('.unknown-expression','click',(function(e) {
+	   clickBubbleForElement(this,"Unknown expression",window._bubble_expression_index);
+	}));
 	
   
 } //end createCodeBubble
@@ -104,15 +119,16 @@ function clickBubbleForElement(el,type,catindex) {
 	  window._bubble_current_type=type;
 	 
 	  $("#syntaxcategory")[0].options[4].text="Edit "+type;
-	  $("#syntaxcategory")[0].selectedIndex=4;//catindex;
-	  loadPage($("#syntaxcategory")[0].options[4].value, document.getElementById('tooltippanel'));
+	  if (catindex===-1) {catindex=4;}
+	  $("#syntaxcategory")[0].selectedIndex=catindex;
+	  loadPage($("#syntaxcategory")[0].options[catindex].value, document.getElementById('tooltippanel'));
 	  showBubble(el);
 	}
 
 function showBubble(el) {
 	
 	var left=$(el).offset().left-70;
-	var arrowLeft="70px";
+	var arrowLeft="65px"; //triangle starts from base (so we want moddible point touching
 	if (left<0) {arrowLeft=$(el).offset().left+"px"; left=0; } //it is right at the left edge of the screen
 	$('.bubble').css('left', left );
 	
@@ -156,7 +172,6 @@ function insertBefore(referenceNode, newNode) {
 
 /* create a new line in python*/
 function newline(inden) {
-	if(inden>1) alert('indentation!');
 	//create the br and line elements
 	var brel = document.createElement('br');
 	var el = document.createElement('line');
@@ -175,26 +190,37 @@ function newline(inden) {
 }
 
 function goToNextElement() {
-	/*var next=window._bubble_current.nextSibling;
-	if (next.className==="indentation") next = next.nextSibling
-	if (next === null) { //if its null it could be at the end of the line
-	    if (window._bubble_current.parentNode.nextSibling.nodeName==="BR")
-		next = window._bubble_current.parentNode.nextSibling.firstChild;
-		}
-		if (next.nextSibling === null) { return -1;} //unknown
-	$(next).click();*/
 	$(getNext(window._bubble_current)).click();
+} //end goToNextElement
+
+function goToPreviousElement() {
+	$(getPrevious(window._bubble_current)).click();
 } //end goToNextElement
 
 function getNext(el,child) {
 	var next;
 	if (child) next=el; //if its a line we pass in the first child
 	else next=el.nextSibling;
-	if (next === null) return getNext(el.parentNode.nextSibling,false);
+	if (next === null) return getNext(el.parentNode,false);
 	if (next.className==="indentation") return getNext(next,false);
 	if (next.nodeName==="BR") return getNext(next,false);
 	if (next.nodeName==="LINE") return getNext(next.firstChild,true);
+	if (next.nodeName==="STATEMENT") return getNext(next.firstChild,true);
 	
 	console.log(next.nodeName+" class:"+next.className);
 	return next;
+	}
+	
+function getPrevious(el,child) {
+	var prev;
+	if (child) prev=el; //if its a line we pass in the first child
+	else prev=el.previousSibling;
+	if (prev === null) return getPrevious(el.parentNode,false);
+	if (prev.className==="indentation") return getPrevious(prev,false);
+	if (prev.nodeName==="BR") return getPrevious(prev,false);
+	if (prev.nodeName==="LINE") return getPrevious(prev.lastChild,true);
+	if (prev.nodeName==="STATEMENT") return getPrevious(prev.lastChild,true);
+	
+	console.log(prev.nodeName+" class:"+prev.className);
+	return prev;
 	}
