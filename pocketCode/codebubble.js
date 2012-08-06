@@ -35,7 +35,18 @@ python_operator_expressions_list=[
 			{name:'Left shift (<< expression)',value:'python_left_shift_expression'},
 			{name:'Right shift (>> expression)',value:'python_right_shift_expression'}
 			];
-
+python_comparison_expressions_list = [
+			{name:'Equality x==y',value:'python_equality_expression'},
+			{name:'Inequality x!=y',value:'python_inequality_expression'},
+			{name:'Less Than x&lt;y',value:'python_less_than_expression'},
+			{name:'Less Than Or Equal x&lt;=y',value:'python_less_than_equal_expression'},
+			{name:'Greater Than x&gt;y',value:'python_greater_than_expression'},
+			{name:'Greater Than or Equal x&gt;=y',value:'python_greater_than_equal_expression'},
+			{name:'Identity test x is y',value:'python_identity_test_expression'},
+			{name:'Not Identity test x is not y',value:'python_not_identity_test_expression'},
+			{name:'Membership test x in y',value:'python_membership_test_expression'},
+			{name:'Not Membership test x not in y',value:'python_not_membership_test_expression'}
+];
 
 
 /*
@@ -338,4 +349,106 @@ function statement_add_comment() {
 	var span = createSpan('cm-comment','# '+comment);
 	insertBeforeCurrent(span);
 	goToPreviousElement(); //goto the comment that was created
+}
+
+/*
+ * Operator Expressions
+ */
+function python_operator_expression(operator,place) {
+	var span = createSpan('cm-operator',operator);
+	if (place==='after') insertAfterCurrent(span); //can put operator before or after current expression
+	else insertBeforeCurrent(span);
+	var unknown_exp=createSpan('unknown-expression','???'); 
+	insertAfter(span,unknown_exp);
+	goToElement(unknown_exp); //move to the unknown expression
+}
+
+function python_comma_expression() {
+	python_operator_expression(', ',window._bubble_insert_position);
+}	
+
+function python_addition_expression() {
+	 python_operator_expression(' + ',window._bubble_insert_position);
+}
+
+function python_subtraction_expression() {
+	 python_operator_expression(' - ',window._bubble_insert_position);
+}
+
+function python_multiplication_expression() {
+	 python_operator_expression(' * ',window._bubble_insert_position);
+}
+
+function python_division_expression() {
+	 python_operator_expression(' / ',window._bubble_insert_position);
+}
+
+function python_remainder_expression() {
+	 python_operator_expression(' % ',window._bubble_insert_position);
+}
+
+function python_truncating_division_expression() {
+	 python_operator_expression(' // ',window._bubble_insert_position);
+}
+
+function python_power_expression() {
+	 python_operator_expression(' ** ',window._bubble_insert_position);
+}
+
+function python_bitwise_or_expression() {
+	 python_operator_expression(' | ',window._bubble_insert_position);
+}
+
+function python_bitwise_xor_expression() {
+	 python_operator_expression(' ^ ',window._bubble_insert_position);
+}
+
+function python_bitwise_and_expression() {
+	 python_operator_expression(' & ',window._bubble_insert_position);
+}
+
+function python_bitwise_not_expression() {
+	 python_operator_expression(' ~',window._bubble_insert_position);
+}
+
+function python_left_shift_expression() {
+	 python_operator_expression(' << ',window._bubble_insert_position);
+}
+
+function python_right_shift_expression() {
+	 python_operator_expression(' >> ',window._bubble_insert_position);
+}
+
+/*
+ Comparison operators
+*/
+ function python_equality_expression() {
+	 python_operator_expression(' == ',window._bubble_insert_position);
+}
+function python_inequality_expression() {
+	 python_operator_expression(' != ',window._bubble_insert_position);
+}
+function python_less_than_expression() {
+	 python_operator_expression(' < ',window._bubble_insert_position);
+}
+function python_less_than_equal_expression() {
+	 python_operator_expression(' <= ',window._bubble_insert_position);
+}
+function python_greater_than_expression() {
+	 python_operator_expression(' > ',window._bubble_insert_position);
+}
+function python_greater_than_equal_expression() {
+	 python_operator_expression(' >= ',window._bubble_insert_position);
+}
+function python_identity_test_expression() {
+	 python_operator_expression(' is ',window._bubble_insert_position);
+}
+function python_not_identity_test_expression() {
+	 python_operator_expression(' is not ',window._bubble_insert_position);
+}
+function python_membership_test_expression() {
+	 python_operator_expression(' in ',window._bubble_insert_position);
+}
+function python_not_membership_test_expression() {
+	 python_operator_expression(' not in ',window._bubble_insert_position);
 }

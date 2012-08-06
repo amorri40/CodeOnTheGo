@@ -30,14 +30,10 @@ else if (classname==="newline") {load_edit_newline();}
 else if (classname==="cm-number") {load_edit_number();}
 
 /* initial setup when document loads */
-$(document).ready(function() { 
-/*
-When document loads add quickChange script for iphone which allows the action to occur on the clickwheel without the done button!
-*/	
 if (isIphone) {
  $(".quickchangeable").quickChange(function() { python_optionbox_action(this);});
 }
-});
+
 
 /*
 Functions to simplify creating html elements
@@ -51,7 +47,7 @@ function createOptionHtml(id,width,optionslist,name_of_first_node,insert_positio
 		console.log(optionslist[opt]);
 		opt_html+='<option value="'+optionslist[opt].value+'">'+optionslist[opt].name+'</option>';
 	}
-	return '<select class="quickchangeable" id="'+id+'" insert_position="'+insert_position+'" style="width:'+width+'px;" onclick="alert(\'hi\') $(window._bubble_current).goTo(); window._bubble_insert_position=\''+insert_position+'\';" onChange="python_optionbox_action(this);">'+opt_html+'</select>';
+	return '<select class="quickchangeable" id="'+id+'" insert_position="'+insert_position+'" style="width:'+width+'px;" onclick="$(window._bubble_current).goTo();" onChange="python_optionbox_action(this);" >'+opt_html+'</select>'
 }
 
 /*
@@ -114,86 +110,19 @@ function load_edit_newline() {
 			
 			
 			$('#edit_cell4')[0].innerHTML=createOptionHtml('python_eol_expressions',90,python_operator_expressions_list,'EOL Expressions','before');
+			$('#edit_cell5')[0].innerHTML=createOptionHtml('python_number_comparison_expressions',90,python_comparison_expressions_list,'Comparison Expressions','before');
 			
 		}
 }
 
 function load_edit_number() {
 	$('#edit_cell4')[0].innerHTML=createOptionHtml('python_number_expressions',90,python_operator_expressions_list,'Operator Expressions','after');
+	$('#edit_cell5')[0].innerHTML=createOptionHtml('python_number_comparison_expressions',90,python_comparison_expressions_list,'Comparison Expressions','after');
 }
 
 /*
 Code editing functions
 */
-function python_comma_expression() {
-	var span = createSpan('cm-operator',', ');
-	insertBeforeCurrent(span);
-	var unknown_exp=createSpan('unknown-expression','???'); 
-	insertAfter(span,unknown_exp);
-	goToElement(unknown_exp); //move to the unknown expression
-}	
-
-function python_addition_expression() {
-	 python_operator_expression(' + ',window._bubble_insert_position);
-}
-
-function python_subtraction_expression() {
-	 python_operator_expression(' - ',window._bubble_insert_position);
-}
-
-function python_multiplication_expression() {
-	 python_operator_expression(' * ',window._bubble_insert_position);
-}
-
-function python_division_expression() {
-	 python_operator_expression(' / ',window._bubble_insert_position);
-}
-
-function python_remainder_expression() {
-	 python_operator_expression(' % ',window._bubble_insert_position);
-}
-
-function python_truncating_division_expression() {
-	 python_operator_expression(' // ',window._bubble_insert_position);
-}
-
-function python_power_expression() {
-	 python_operator_expression(' ** ',window._bubble_insert_position);
-}
-
-function python_bitwise_or_expression() {
-	 python_operator_expression(' | ',window._bubble_insert_position);
-}
-
-function python_bitwise_xor_expression() {
-	 python_operator_expression(' ^ ',window._bubble_insert_position);
-}
-
-function python_bitwise_and_expression() {
-	 python_operator_expression(' & ',window._bubble_insert_position);
-}
-
-function python_bitwise_not_expression() {
-	 python_operator_expression(' ~',window._bubble_insert_position);
-}
-
-function python_left_shift_expression() {
-	 python_operator_expression(' << ',window._bubble_insert_position);
-}
-
-function python_right_shift_expression() {
-	 python_operator_expression(' >> ',window._bubble_insert_position);
-}
-
-
-function python_operator_expression(operator,place) {
-	var span = createSpan('cm-operator',operator);
-	if (place==='after') insertAfterCurrent(span); //can put operator before or after current expression
-	else insertBeforeCurrent(span);
-	var unknown_exp=createSpan('unknown-expression','???'); 
-	insertAfter(span,unknown_exp);
-	goToElement(unknown_exp); //move to the unknown expression
-}
 
 	
 function edit_string() {

@@ -10,7 +10,7 @@
       <option value="exp_add_complex">Complex Number</option>
     </select>
   </td>
-  <td >
+  <td id="edit_cell2" >
     <select id="python_expression_operator" style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_optionbox_action(this);">
       <option value="audi">Operators..</option>
       <option value="audi">Addition x+y</option>
@@ -29,7 +29,7 @@
       <option value="audi">Right-shift x&gt;&gt;y</option>
     </select>
   </td>
-  <td >
+  <td id="edit_cell3">
     <select style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_optionbox_action(this);">
       <option value="audi">Comparisons..</option>
       <option value="audi">Equality x==y</option>
@@ -90,6 +90,10 @@
 
 </table>
 <script>
+
+//load the operator expressions
+	$('#edit_cell2')[0].innerHTML=createOptionHtml('python_expression_operator',90,python_operator_expressions_list,'Operator Expressions','after');
+	$('#edit_cell3')[0].innerHTML=createOptionHtml('python_number_comparison_expressions',90,python_comparison_expressions_list,'Comparison Expressions','after');
 
 
 
