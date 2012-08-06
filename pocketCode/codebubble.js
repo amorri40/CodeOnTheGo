@@ -14,6 +14,41 @@ function loadPage(name,el) {
 	$(el).load(name);
 }
 
+/*
+
+  python lists
+  
+*/
+python_operator_expressions_list=[
+			{name:'Comma Expression (, expression)',value:'python_comma_expression'},
+			{name:'Add Expression (+ expression)',value:'python_addition_expression'},
+			{name:'Subtraction Expression (- expression)',value:'python_subtraction_expression'},
+			{name:'Multiplication Expression (* expression)',value:'python_multiplication_expression'},
+			{name:'Division Expression (/ expression)',value:'python_division_expression'},
+			{name:'Remainder Expression (% expression)',value:'python_remainder_expression'},
+			{name:'Truncating division Expression (// expression)',value:'python_truncating_division_expression'},
+			{name:'Power Expression (** expression)',value:'python_power_expression'},
+			{name:'Bitwise or (| expression)',value:'python_bitwise_or_expression'},
+			{name:'Bitwise xor (^ expression)',value:'python_bitwise_xor_expression'},
+			{name:'Bitwise and (& expression)',value:'python_bitwise_and_expression'},
+			{name:'Bitwise not (~ expression)',value:'python_bitwise_not_expression'},
+			{name:'Left shift (<< expression)',value:'python_left_shift_expression'},
+			{name:'Right shift (>> expression)',value:'python_right_shift_expression'}
+			];
+
+
+
+/*
+
+   Functions
+
+*/
+
+
+
+
+
+
 /* iPhone Manually polling the selected index function for iphone Thanks to InvisibleBacon on StackOverflow */
 $.fn.quickChange = function(handler) {
     return this.each(function() {
@@ -63,31 +98,30 @@ $(document).ready(function() {
 });
 
 
-/*create code bubble used on page load*/
+/*
+ Create code bubble used on page load
+*/
 function createCodeBubble() {
-  /*new tooltip script*/
-  $('#output').delegate('.cm-variable','click',(function(e) {
+    $('#output').delegate('.cm-variable','click',(function(e) {
 	  clickBubbleForElement(this,"VAR",window._bubble_variable_index);
-  }));
-	  
-//$('.newline').on('click',(function(e) {
-//	   clickBubbleForElement(this,"Line",window._bubble_newline_index);
-//	}));
+    }));
 	
-	$('#output').delegate('.newline', 'click', function() { clickBubbleForElement(this,"Line",window._bubble_newline_index); });	
+    $('#output').delegate('.newline', 'click', function() { 
+	clickBubbleForElement(this,"Line",-1/*window._bubble_newline_index*/); 
+	});	
 	
-$('#output').delegate('.cm-string','click',(function(e) {
+    $('#output').delegate('.cm-string','click',(function(e) {
 	   clickBubbleForElement(this,"String",-1);
 	}));
-$('#output').delegate('.cm-number','click',(function(e) {
+    $('#output').delegate('.cm-number','click',(function(e) {
 	   clickBubbleForElement(this,"Number",-1);
 	}));
 	
-$('#output').delegate('.cm-keyword','click',(function(e) {
+    $('#output').delegate('.cm-keyword','click',(function(e) {
 	   clickBubbleForElement(this,"Statement",-1);
 	}));
 	
-$('#output').delegate('.cm-operator','click',(function(e) {
+    $('#output').delegate('.cm-operator','click',(function(e) {
 	   clickBubbleForElement(this,"Operator",-1);
 	}));
 	
@@ -102,10 +136,6 @@ $('#output').delegate('.cm-operator','click',(function(e) {
 	$('#output').delegate('.cm-delimiter','click',(function(e) {
 	   clickBubbleForElement(this,"Delimiter",-1);
 	}));
-	
-	/*$('.unknown-expression').click(function(e) {
-	   clickBubbleForElement(this,"Unknown expression",window._bubble_expression_index);
-	});*/
 	
 	$('#output').delegate('.unknown-expression','click',(function(e) {
 	   clickBubbleForElement(this,"Unknown expression",window._bubble_expression_index);
@@ -152,12 +182,6 @@ function showBubble(el) {
 	
 	//finally scroll to the bubble
 	$(window._bubble_current).goTo();
-/*	  
-//be very careful adding and deleting rules
-if (window._bubble_arrow_rule===true) document.styleSheets[0].deleteRule(0); //delete the rule since it has been created
-document.styleSheets[0].insertRule('span.bubble:after { content: ""; position: absolute; width: 0;height: 0; border-width: 10px; border-style: solid; border-color: rgba(230, 230, 230, 0.5) transparent transparent transparent; top: 100%; left: '+arrowLeft+'; }', 0);
-window._bubble_arrow_rule=true;
-*/
 
 	}
 	
@@ -192,6 +216,9 @@ function newline(inden) {
 /*
 Moving the code bubble functions
 */
+function goToElement(el) { //move the bubble to a certain element
+	$(el).click();
+}
 
 function goToNextElement() {
 	$(getNext(window._bubble_current)).click();
@@ -247,8 +274,68 @@ function insertBeforeCurrent(el) {
 	insertBefore(window._bubble_current,el);
 }
 
+function insertAfterCurrent(el) {
+	insertAfter(window._bubble_current,el);
+}
+
 function delete_current() {
 	var currentNode=window._bubble_current; //keep the current node because we are about to change
 	goToPreviousElement(); //change to previous element (since it won't move, unlike the next element)
 	currentNode.parentNode.removeChild(currentNode);
+}
+
+function is_blank_line(el) { //returns whether thenode is a blank line
+	if (el.tagName==="STATEMENT") el=el.parentNode;
+	if (el.tagName!="LINE") return false; //not even a line
+	if (el.childNodes.length===1) return true; //only has a newline element so yes it is blank
+	for (nodenum in el.childNodes) {
+		var node=el.childNodes[nodenum];
+		if (node.tagName!="BR" && node.tagName!="INDENTATION") return false; //its not blank as it contains non indentation nodes
+	}
+}
+
+/* 
+Funtions for modifying the codebubble UI
+*/
+function python_optionbox_action(el) {
+	window._bubble_insert_position=el.getAttribute('insert_position');
+	 window[el.options[el.selectedIndex].value](); //call the functionname stored in the value of each option
+	   el.selectedIndex=0;
+}
+
+/* 
+Statement functions 
+*/
+
+/* insert_statement creates the elements only if it is an EOL (statements can't be used as expressions)*/
+function insert_statement(statementType,statementHTML,selectChild) {
+	var statementelement = document.createElement("statement");
+	statementelement.className=statementType;
+	statementelement.innerHTML=statementHTML;
+	insertBefore(window._bubble_current,statementelement);
+	if (selectChild!=-1) { //select one of the child nodes (normally used for unknown expressions added by the statement
+		$(statementelement.childNodes[selectChild]).click();	
+	}
+}
+
+function print_statement() {
+	insert_statement('print_statement','<span class="cm-keyword">print</span><indentation class="indentation" num="1"> </indentation><span class="unknown-expression">???</span>',2);
+}
+
+function if_statement() {
+	insert_statement('if_statement','<span class="cm-keyword">if</span><indentation class="indentation" num="1"> </indentation><span class="unknown-expression">???</span><indentation class="indentation" num="1"> </indentation><span class="cm-delimiter">:</span><indentation class="indentation" num="1"> </indentation>',2);
+	newline(4);
+}
+
+function statement_newline() {
+	if (window._bubble_current.parentNode.firstChild.tagName==="INDENTATION") {console.log(window._bubble_current.parentNode.firstChild);}
+	newline();
+	goToNextElement();
+	}
+	
+function statement_add_comment() {
+	var comment=prompt("Enter the comment line:","");
+	var span = createSpan('cm-comment','# '+comment);
+	insertBeforeCurrent(span);
+	goToPreviousElement(); //goto the comment that was created
 }

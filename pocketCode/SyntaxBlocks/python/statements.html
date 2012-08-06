@@ -34,44 +34,8 @@ function python_statements_action(el) {
 $(document).ready(function() { //quick change is for iphone not desktop
 //add iphone click wheel script to each select element	
 if (isIphone) {
- $("#python_statements_line").quickChange(function() { python_statements_action(this);});
- $("#python_statements_az").quickChange(function() { python_statements_action(this);}); 
+ $("#python_statements_line").quickChange(function() { python_optionbox_action(this);});
+ $("#python_statements_az").quickChange(function() { python_optionbox_action(this);}); 
 }
 });
-
-/* insert_statement creates the elements only if it is an EOL (statements can't be used as expressions)*/
-function insert_statement(statementType,statementHTML,selectChild) {
-	//if (window._bubble_current_type!="Line") {alert("You can only place statements at the start or end of a line"); return 0;}
-	var statementelement = document.createElement("statement");
-	statementelement.className=statementType;
-	statementelement.innerHTML=statementHTML;
-	insertBefore(window._bubble_current,statementelement);
-	if (selectChild!=-1) { //select one of the child nodes (normally used for unknown expressions added by the statement
-		$(statementelement.childNodes[selectChild]).click();	
-	}
-}
-
-/* Functions to modify source*/
-function print_statement() {
-	insert_statement('print_statement','<span class="cm-keyword">print</span><indentation class="indentation" num="1"> </indentation><span class="unknown-expression">???</span>',2);
-}
-
-function if_statement() {
-	insert_statement('if_statement','<span class="cm-keyword">if</span><indentation class="indentation" num="1"> </indentation><span class="unknown-expression">???</span><indentation class="indentation" num="1"> </indentation><span class="cm-delimiter">:</span><indentation class="indentation" num="1"> </indentation>',2);
-	
-	newline(4);
-}
-
-function statement_newline() {
-	if (window._bubble_current.parentNode.firstChild.tagName==="INDENTATION") {console.log(window._bubble_current.parentNode.firstChild);}
-	newline();
-	goToNextElement();
-	}
-	
-function statement_add_comment() {
-	var comment=prompt("Enter the comment line:","");
-	var span = createSpan('cm-comment','# '+comment);
-	insertBeforeCurrent(span);
-	goToPreviousElement(); //goto the comment that was created
-}
 </script>

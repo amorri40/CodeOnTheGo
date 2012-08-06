@@ -19,36 +19,182 @@
 </table>
 
 <script>
+/*
+Change the options based on the class name
+*/
 var classname=window._bubble_current.className;
 if (classname==="cm-string") {load_edit_string();}
 else if (classname==="cm-keyword") {load_edit_statement();}
 else if (classname==="cm-comment") {load_edit_comment();}
+else if (classname==="newline") {load_edit_newline();}
+else if (classname==="cm-number") {load_edit_number();}
 
+/* initial setup when document loads */
+$(document).ready(function() { 
+/*
+When document loads add quickChange script for iphone which allows the action to occur on the clickwheel without the done button!
+*/	
+if (isIphone) {
+ $(".quickchangeable").quickChange(function() { python_optionbox_action(this);});
+}
+});
+
+/*
+Functions to simplify creating html elements
+*/
+function createButtonHtml(name,jscript,width,height) {
+	return '<button type="button" onclick="'+jscript+'" style="width:'+width+'px; height:'+height+'px;">'+name+'</button>';
+}
+function createOptionHtml(id,width,optionslist,name_of_first_node,insert_position) {
+	var opt_html="<option value='void'>"+name_of_first_node+"</option>";
+	for (opt in optionslist) {
+		console.log(optionslist[opt]);
+		opt_html+='<option value="'+optionslist[opt].value+'">'+optionslist[opt].name+'</option>';
+	}
+	return '<select class="quickchangeable" id="'+id+'" insert_position="'+insert_position+'" style="width:'+width+'px;" onclick="alert(\'hi\') $(window._bubble_current).goTo(); window._bubble_insert_position=\''+insert_position+'\';" onChange="python_optionbox_action(this);">'+opt_html+'</select>';
+}
+
+/*
+functions to load each interface depending on what was pressed
+*/
 
 function load_edit_string() {
-	$('#edit_cell1')[0].innerHTML='<button type="button" onclick="edit_string();" style="width:45px; height:40px;">Edit Text</button>';
-	$('#edit_cell2')[0].innerHTML='<button type="button" onclick="" style="width:90px; height:40px;">Change to expression</button>';
-	$('#edit_cell3')[0].innerHTML='<button type="button" onclick="" style="width:45px; height:40px;">Split Text</button>';
+	$('#edit_cell1')[0].innerHTML=createButtonHtml('Edit Text','edit_string();',45,40);
+	$('#edit_cell2')[0].innerHTML=createButtonHtml('Change to expression','',90,40);
+	$('#edit_cell3')[0].innerHTML=createButtonHtml('Split Text','',45,40);
 	}
 
 function load_edit_statement() {
-	$('#edit_cell1')[0].innerHTML='<button type="button" onclick="" style="width:90px; height:35px;">change to..</button>';
-	$('#edit_cell2')[0].innerHTML='<button type="button" onclick="remove_statement()" style="width:90px; height:35px;">Delete</button>';
-	$('#edit_cell3')[0].innerHTML='<button type="button" onclick="edit_comment_out()" style="width:90px; height:35px;">Comment out</button>';
-	$('#edit_cell4')[0].innerHTML='<button type="button" onclick="" style="width:90px; height:35px;">Copy</button>';
-	$('#edit_cell5')[0].innerHTML='<select id="python_edit_statement_selection" style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_expression_action(this);"><option value="">Select</option><option value="">Add to Selection</option></select>';
-	$('#edit_cell6')[0].innerHTML='<select id="python_edit_statement_spacing" style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_expression_action(this);"><option value="">Move Right</option><option value="">Move Left</option></select>';
+	$('#edit_cell1')[0].innerHTML=createButtonHtml('Change to..','',90,35);
+	$('#edit_cell2')[0].innerHTML=createButtonHtml('Delete','remove_statement();',90,35);
+	$('#edit_cell3')[0].innerHTML=createButtonHtml('Comment out','edit_comment_out()',90,35);
+	$('#edit_cell4')[0].innerHTML=createButtonHtml('Copy','',90,35);
+	$('#edit_cell5')[0].innerHTML=createOptionHtml('python_edit_statement_selection',90,[{name:'Select',value:''},{name:'Add to Selection',value:''}],"Selections",'before');
+	$('#edit_cell6')[0].innerHTML=createOptionHtml('python_edit_statement_spacing',90,[{name:'Move Right',value:''},{name:'Move Left',value:''}],"Indentation",'before');
 	}	
 	
 function load_edit_comment() {
-if (window._bubble_current.parentNode.tagName==="STATEMENT" && window._bubble_current.parentNode.getAttribute('commented')) 
-		$('#edit_cell3')[0].innerHTML='<button type="button" class="bubblebutton" onclick="edit_uncomment_out()">UnComment out</button>';
-else { //normal comment
-		$('#edit_cell1')[0].innerHTML='<button type="button" class="bubblebutton" onclick="edit_comment_edit()">Edit</button>';
-		$('#edit_cell2')[0].innerHTML='<button type="button" class="bubblebutton" onclick="edit_comment_delete()">Delete</button>';
-	}
+  if (window._bubble_current.parentNode.tagName==="STATEMENT" && window._bubble_current.parentNode.getAttribute('commented')) 
+		  $('#edit_cell3')[0].innerHTML=createButtonHtml('UnComment out','edit_uncomment_out();',90,35);
+  else { //normal comment
+		  $('#edit_cell1')[0].innerHTML=createButtonHtml('Edit Comment','edit_comment_edit();',90,35);
+		  $('#edit_cell2')[0].innerHTML=createButtonHtml('Delete Comment','edit_comment_delete();',90,35);
+	  }
 }
+
+//createOptionHtml('',90,[{name:'',value:''},{name:'',value:''}]);
+
+function load_edit_newline() {
+	//first set the cells that are on both start and end lines
+	$('#edit_cell1')[0].innerHTML=createOptionHtml('python_statements_line',90,[ 
+	{name:'New Line below',value:'statement_newline'},
+	{name:'Delete Current Line',value:''},
+	{name:'Select current Line',value:''},
+	{name:'Add Line to selection',value:''},
+	{name:'Copy Line',value:''},
+	{name:'Cut Line',value:''},
+	{name:'Paste under this line',value:''},
+	{name:'Paste above this line',value:''}],"Lines",'after');
 	
+	$('#edit_cell2')[0].innerHTML=createOptionHtml('python_statements_az',90,[ 
+	{name:'print message to output',value:'print_statement'},
+	{name:'if expression is true',value:'if_statement'},
+	{name:'Comment #This is for humans',value:'statement_add_comment'}
+	],"A-Z Statements",'before');
+	
+	//will change depending on if its the start or end of a line!
+	var start = is_blank_line(window._bubble_current.parentNode);
+	if (start) { //show start of the line settings
+			$("#syntaxcategory")[0].options[4].text="Edit Start of Line"; //edit name of category to indicate start of line
+			
+			
+	}
+	else { //show end of the line settings
+			$("#syntaxcategory")[0].options[4].text="Edit End of Line"; //edit name of category that will appear in the dropdown
+			
+			
+			$('#edit_cell4')[0].innerHTML=createOptionHtml('python_eol_expressions',90,python_operator_expressions_list,'EOL Expressions','before');
+			
+		}
+}
+
+function load_edit_number() {
+	$('#edit_cell4')[0].innerHTML=createOptionHtml('python_number_expressions',90,python_operator_expressions_list,'Operator Expressions','after');
+}
+
+/*
+Code editing functions
+*/
+function python_comma_expression() {
+	var span = createSpan('cm-operator',', ');
+	insertBeforeCurrent(span);
+	var unknown_exp=createSpan('unknown-expression','???'); 
+	insertAfter(span,unknown_exp);
+	goToElement(unknown_exp); //move to the unknown expression
+}	
+
+function python_addition_expression() {
+	 python_operator_expression(' + ',window._bubble_insert_position);
+}
+
+function python_subtraction_expression() {
+	 python_operator_expression(' - ',window._bubble_insert_position);
+}
+
+function python_multiplication_expression() {
+	 python_operator_expression(' * ',window._bubble_insert_position);
+}
+
+function python_division_expression() {
+	 python_operator_expression(' / ',window._bubble_insert_position);
+}
+
+function python_remainder_expression() {
+	 python_operator_expression(' % ',window._bubble_insert_position);
+}
+
+function python_truncating_division_expression() {
+	 python_operator_expression(' // ',window._bubble_insert_position);
+}
+
+function python_power_expression() {
+	 python_operator_expression(' ** ',window._bubble_insert_position);
+}
+
+function python_bitwise_or_expression() {
+	 python_operator_expression(' | ',window._bubble_insert_position);
+}
+
+function python_bitwise_xor_expression() {
+	 python_operator_expression(' ^ ',window._bubble_insert_position);
+}
+
+function python_bitwise_and_expression() {
+	 python_operator_expression(' & ',window._bubble_insert_position);
+}
+
+function python_bitwise_not_expression() {
+	 python_operator_expression(' ~',window._bubble_insert_position);
+}
+
+function python_left_shift_expression() {
+	 python_operator_expression(' << ',window._bubble_insert_position);
+}
+
+function python_right_shift_expression() {
+	 python_operator_expression(' >> ',window._bubble_insert_position);
+}
+
+
+function python_operator_expression(operator,place) {
+	var span = createSpan('cm-operator',operator);
+	if (place==='after') insertAfterCurrent(span); //can put operator before or after current expression
+	else insertBeforeCurrent(span);
+	var unknown_exp=createSpan('unknown-expression','???'); 
+	insertAfter(span,unknown_exp);
+	goToElement(unknown_exp); //move to the unknown expression
+}
+
 	
 function edit_string() {
 	var html = window._bubble_current.innerHTML;
@@ -79,7 +225,6 @@ function edit_comment_out() {
 	el.style.display='none';
 	el=next;
    }
-   console.log(code);
   
     var span = createSpan('cm-comment','# '+code);
 	parent.appendChild(span);
