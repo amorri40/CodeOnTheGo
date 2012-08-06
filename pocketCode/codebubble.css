@@ -39,6 +39,11 @@ background-color: red;
 color: white;
 }
 
+.unknown-variable { 
+background-color: red;
+color: white;
+}
+
 .newline {
 	background: lightgrey;
     width: 100%;

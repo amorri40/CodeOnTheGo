@@ -92,11 +92,7 @@ function load_edit_newline() {
 	{name:'Paste under this line',value:''},
 	{name:'Paste above this line',value:''}],"Lines",'after');
 	
-	$('#edit_cell2')[0].innerHTML=createOptionHtml('python_statements_az',90,[ 
-	{name:'print message to output',value:'print_statement'},
-	{name:'if expression is true',value:'if_statement'},
-	{name:'Comment #This is for humans',value:'statement_add_comment'}
-	],"A-Z Statements",'before');
+	$('#edit_cell2')[0].innerHTML=createOptionHtml('python_statements_az',90,python_statements_az_list,"A-Z Statements",'before');
 	
 	//will change depending on if its the start or end of a line!
 	var start = is_blank_line(window._bubble_current.parentNode);

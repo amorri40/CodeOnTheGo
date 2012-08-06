@@ -2,7 +2,8 @@
 <tr>
   <td >
     <select id="python_expression_literal" style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_optionbox_action(this);">
-      <option value="void">Literal...</option>
+      <option value="void">Value..</option>
+      <option value="exp_goto_variable_bubble">Variable</option>
       <option value="exp_add_string">String</option>
       <option value="exp_add_integer">Integer</option>
       <option value="exp_add_float">Float</option>
@@ -94,45 +95,6 @@
 //load the operator expressions
 	$('#edit_cell2')[0].innerHTML=createOptionHtml('python_expression_operator',90,python_operator_expressions_list,'Operator Expressions','after');
 	$('#edit_cell3')[0].innerHTML=createOptionHtml('python_number_comparison_expressions',90,python_comparison_expressions_list,'Comparison Expressions','after');
-
-
-
-function insert_expression(expressionType,html) {
-	//if unkown expression replace otherwise insertafter
-	if (window._bubble_current.className==="unknown-expression") {window._bubble_current.className=expressionType; window._bubble_current.innerHTML=html;}
-	else {
-	  var span = document.createElement("span");
-	  span.className=expressionType;
-	  span.innerHTML=html;
-	  insertAfter(window._bubble_current,span);
-	}
-	goToNextElement();//finnaly move along to select the next element
-}
-
-function exp_add_string() {
-  var value=prompt("Enter a string","");
-  insert_expression('cm-string','"'+value+'"'); 
-}
-
-function exp_add_integer() {
-  var value=prompt("Enter an integer","");
-  insert_expression('cm-number',value); 	
-}
-
-function exp_add_float() {
-  var value=prompt("Enter a floating point value","");
-  insert_expression('cm-number',value); 	
-}
-
-function exp_add_long() {
-  var value=prompt("Enter a long value","");
-  insert_expression('cm-number',value); 	
-}
-
-function exp_add_complex() {
-  var value=prompt("Enter a complex number","");
-  insert_expression('cm-number',value); 	
-}
 
 
 

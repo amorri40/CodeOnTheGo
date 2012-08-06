@@ -1,0 +1,38 @@
+<table border="0" style="width:90%;">
+<tr>
+    <td id="edit_cell1"> A big select with options like Variables in this file, variables local to this modules, variables local to this class, variables local to this function, Variable from external module, variable from external class </td>
+    <td id="edit_cell2">
+    Module:
+    </td>
+  </tr>
+  
+  <tr>
+    <td id="edit_cell3">
+    Type: local, global, class, module, variable.variable class.variable module.variable
+    </td>
+    <td id="edit_cell4">New variable (add to hashtable of variables)</td>
+  </tr>
+</table>
+<script>
+$('#edit_cell1')[0].innerHTML=createOptionHtml('python_variable_select_type',120,[
+{name:'New variable', value:'python_variable_new'},
+{name:'Existing Local variable', value:''},
+{name:'Existing Global variable', value:''},
+{name:'Existing Class', value:''},
+{name:'Existing Module', value:''},
+{name:'variable.variable', value:''}
+/*{name:'class.variable', value:''}
+{name:'module.variable', value:''}*/
+]
+,'Select Type','after');
+
+$('#edit_cell2')[0].innerHTML=createOptionHtml('python_variable_select_type',120,python_operator_expressions_list,'Continue Expression','after');
+$('#edit_cell3')[0].innerHTML='Select a Type of Variable';
+$('#edit_cell4')[0].innerHTML='';
+
+function python_variable_new() {
+	var value=prompt("New variable name?","");
+    insert_expression('cm-variable',value);
+}
+
+</script>

@@ -4,6 +4,7 @@ window._bubble_variable_index=4;
 window._bubble_string_index=4;
 window._bubble_keyword_index=0;
 window._bubble_expression_index=1;
+window._bubble_variable_index=3;
 
 /* check which browser */
 var agent = navigator.userAgent;
@@ -20,6 +21,7 @@ function loadPage(name,el) {
   
 */
 python_operator_expressions_list=[
+			{name:'Dot variable (.variable)', value:'python_dot_variable'},
 			{name:'Comma Expression (, expression)',value:'python_comma_expression'},
 			{name:'Add Expression (+ expression)',value:'python_addition_expression'},
 			{name:'Subtraction Expression (- expression)',value:'python_subtraction_expression'},
@@ -48,15 +50,19 @@ python_comparison_expressions_list = [
 			{name:'Not Membership test x not in y',value:'python_not_membership_test_expression'}
 ];
 
+python_statements_az_list = [
+	{name:'Assignment x = expression',value:'assignment_statement'},
+	{name:'print message to output',value:'print_statement'},
+	{name:'if expression is true',value:'if_statement'},
+	{name:'Comment #This is for humans',value:'statement_add_comment'}
+];
+
 
 /*
 
    Functions
 
 */
-
-
-
 
 
 
@@ -150,6 +156,10 @@ function createCodeBubble() {
 	
 	$('#output').delegate('.unknown-expression','click',(function(e) {
 	   clickBubbleForElement(this,"Unknown expression",window._bubble_expression_index);
+	}));
+	
+	$('#output').delegate('.unknown-variable','click',(function(e) {
+	   clickBubbleForElement(this,"Unknown expression",window._bubble_variable_index);
 	}));
 	
   
@@ -351,6 +361,10 @@ function statement_add_comment() {
 	goToPreviousElement(); //goto the comment that was created
 }
 
+function assignment_statement() {
+	insert_statement('if_statement','<span class="unknown-variable">???</span><indentation class="indentation" num="1"> </indentation><span class="cm-operator"> = </span><indentation class="indentation" num="1"> </indentation><span class="unknown-expression">???</span>',2);
+}
+
 /*
  * Operator Expressions
  */
@@ -451,4 +465,51 @@ function python_membership_test_expression() {
 }
 function python_not_membership_test_expression() {
 	 python_operator_expression(' not in ',window._bubble_insert_position);
+}
+
+
+/*
+ * Expression Functions
+*/
+function insert_expression(expressionType,html) {
+	//if unkown expression replace otherwise insertafter
+	if (window._bubble_current.className==="unknown-expression" || window._bubble_current.className==="unknown-variable") {window._bubble_current.className=expressionType; window._bubble_current.innerHTML=html;}
+	else {
+	  var span = document.createElement("span");
+	  span.className=expressionType;
+	  span.innerHTML=html;
+	  insertAfter(window._bubble_current,span);
+	}
+	goToNextElement();//finnaly move along to select the next element
+}
+
+function exp_add_string() {
+  var value=prompt("Enter a string","");
+  insert_expression('cm-string','"'+value+'"'); 
+}
+
+function exp_add_integer() {
+  var value=prompt("Enter an integer","");
+  insert_expression('cm-number',value); 	
+}
+
+function exp_add_float() {
+  var value=prompt("Enter a floating point value","");
+  insert_expression('cm-number',value); 	
+}
+
+function exp_add_long() {
+  var value=prompt("Enter a long value","");
+  insert_expression('cm-number',value); 	
+}
+
+function exp_add_complex() {
+  var value=prompt("Enter a complex number","");
+  insert_expression('cm-number',value); 	
+}
+
+function exp_goto_variable_bubble() {
+	 var catindex=window._bubble_variable_index; //goto the variable screen
+	 $("#syntaxcategory")[0].selectedIndex=catindex;
+	 loadPage($("#syntaxcategory")[0].options[catindex].value, document.getElementById('tooltippanel'));
 }
