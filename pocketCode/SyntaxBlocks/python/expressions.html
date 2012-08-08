@@ -1,7 +1,7 @@
 <table border="0" style="width:90%;">
 <tr>
   <td >
-    <select id="python_expression_literal" style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_optionbox_action(this);">
+    <select class="quickchangeable" id="python_expression_literal" style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_optionbox_action(this);">
       <option value="void">Value..</option>
       <option value="exp_goto_variable_bubble">Variable</option>
       <option value="exp_add_string">String</option>
@@ -12,7 +12,7 @@
     </select>
   </td>
   <td id="edit_cell2" >
-    <select id="python_expression_operator" style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_optionbox_action(this);">
+    <select class="quickchangeable" id="python_expression_operator" style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_optionbox_action(this);">
       <option value="audi">Operators..</option>
       <option value="audi">Addition x+y</option>
       <option value="audi">Subtraction x-y</option>
@@ -31,7 +31,7 @@
     </select>
   </td>
   <td id="edit_cell3">
-    <select style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_optionbox_action(this);">
+    <select class="quickchangeable" style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_optionbox_action(this);">
       <option value="audi">Comparisons..</option>
       <option value="audi">Equality x==y</option>
       <option value="audi">Inequality x!=y</option>
@@ -49,27 +49,29 @@
 
 <tr>
   <td>
-    <select style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_optionbox_action(this);">
-      <option value="audi">Boolean..</option>
-      <option value="audi">and (Expression)</option>
-      <option value="audi">or (Expression)</option>
-      <option value="audi">not (Expression)</option>
-      <option value="audi">True</option>
-      <option value="audi">False</option>
+    <select class="quickchangeable" style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_optionbox_action(this);">
+      <option value="void">Boolean..</option>
+      <option value="void">and (Expression)</option>
+      <option value="void">or (Expression)</option>
+      <option value="void">not (Expression)</option>
+      <option value="void">True</option>
+      <option value="void">False</option>
     </select>
   </td>
   <td>
-    <select style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_optionbox_action(this);">
-      <option value="audi" disabled="disabled">Other..</option>
-      <option value="audi">List creation [expr,...]</option>
-      <option value="audi">Dictionary creation {key:expr,...}</option>
-      <option value="audi">Ternary (X if true else Y)</option>
-      <option value="audi">Tuple/Parameters (expression,..)</option> 
-      <option value="audi">Single Tuple</option> 
-      <option value="audi">Slicing x[index:index]</option> 
-      <option value="audi">Indexing x[index]</option> 
-      <option value="audi">String converstion `expr,...`</option>
-      <option value="audi">Lambda lambda arg,...: expr</option>
+    <select class="quickchangeable" style="width:90px;" onclick="$(window._bubble_current).goTo();" onChange="python_optionbox_action(this);">
+      <option value="void">Other..</option>
+      <option value="exp_wrap_parentheses">Wrap in parentheses (expression)</option>
+      <option value="exp_add_format_string">Format String "%s" %(value)</option>
+      <option value="void">List creation [expr,...]</option>
+      <option value="void">Dictionary creation {key:expr,...}</option>
+      <option value="void">Ternary (X if true else Y)</option>
+      <option value="void">Tuple/Parameters (expression,..)</option> 
+      <option value="void">Single Tuple</option> 
+      <option value="void">Slicing x[index:index]</option> 
+      <option value="void">Indexing x[index]</option> 
+      <option value="void">String converstion `expr,...`</option>
+      <option value="void">Lambda lambda arg,...: expr</option>
     </select>
   </td>
   <td>
@@ -101,9 +103,7 @@
 $("#python_expression_literal").quickChange(function() { python_optionbox_action(this);});
 
 /* initial setup when document loads */
-$(document).ready(function() { //quick change is for iphone not desktop
-//add iphone click wheel script to each select element	
- $("#python_expression_literal").quickChange(function() { python_optionbox_action(this);});
- $("#python_expression_operator").quickChange(function() { python_optionbox_action(this);}); 
-});
+if (isIphone) {
+ $(".quickchangeable").quickChange(function() { python_optionbox_action(this);});
+}
 </script>

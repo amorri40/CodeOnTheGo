@@ -35,7 +35,8 @@ python_operator_expressions_list=[
 			{name:'Bitwise and (& expression)',value:'python_bitwise_and_expression'},
 			{name:'Bitwise not (~ expression)',value:'python_bitwise_not_expression'},
 			{name:'Left shift (<< expression)',value:'python_left_shift_expression'},
-			{name:'Right shift (>> expression)',value:'python_right_shift_expression'}
+			{name:'Right shift (>> expression)',value:'python_right_shift_expression'},
+			{name:'Wrap in parentheses (expression)',value:'exp_wrap_parentheses'}//
 			];
 python_comparison_expressions_list = [
 			{name:'Equality x==y',value:'python_equality_expression'},
@@ -120,7 +121,7 @@ $(document).ready(function() {
 */
 function createCodeBubble() {
     $('#output').delegate('.cm-variable','click',(function(e) {
-	  clickBubbleForElement(this,"VAR",window._bubble_variable_index);
+	  clickBubbleForElement(this,"Variable",-1);
     }));
 	
     $('#output').delegate('.newline', 'click', function() { 
@@ -139,7 +140,7 @@ function createCodeBubble() {
 	}));
 	
     $('#output').delegate('.cm-operator','click',(function(e) {
-	   clickBubbleForElement(this,"Operator",-1);
+	   clickBubbleForElement(this,"Operator:"+this.innerHTML,-1);
 	}));
 	
 	$('#output').delegate('.cm-builtin','click',(function(e) {
@@ -512,4 +513,18 @@ function exp_goto_variable_bubble() {
 	 var catindex=window._bubble_variable_index; //goto the variable screen
 	 $("#syntaxcategory")[0].selectedIndex=catindex;
 	 loadPage($("#syntaxcategory")[0].options[catindex].value, document.getElementById('tooltippanel'));
+}
+
+function exp_add_format_string() {
+	var value=prompt("Enter a string %d=decimal %s=string %f=float %c=character %r=debug","");
+	insert_expression('cm-string','"'+value+'"'); 
+	python_remainder_expression(); //might aswell reuse remainder for the %
+}
+
+function exp_wrap_parentheses() {
+	var left = createSpan('cm-operator',' ( ');
+	insertBeforeCurrent(left);
+	var right = createSpan('cm-operator',' ) ');
+	insertAfterCurrent(right);
+	goToElement(window._bubble_current); //since the element has moved move the bubble too
 }

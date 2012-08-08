@@ -28,6 +28,7 @@ else if (classname==="cm-keyword") {load_edit_statement();}
 else if (classname==="cm-comment") {load_edit_comment();}
 else if (classname==="newline") {load_edit_newline();}
 else if (classname==="cm-number") {load_edit_number();}
+else if (classname==="cm-operator") {load_edit_operator();}
 
 /* initial setup when document loads */
 if (isIphone) {
@@ -114,6 +115,22 @@ function load_edit_newline() {
 function load_edit_number() {
 	$('#edit_cell4')[0].innerHTML=createOptionHtml('python_number_expressions',90,python_operator_expressions_list,'Operator Expressions','after');
 	$('#edit_cell5')[0].innerHTML=createOptionHtml('python_number_comparison_expressions',90,python_comparison_expressions_list,'Comparison Expressions','after');
+}
+
+function load_edit_operator() {
+var operator=""+window._bubble_current.innerHTML;
+console.log("edit:"+operator);
+
+//add additional expressions
+if (operator===" ) ") {
+	$('#edit_cell1')[0].innerHTML='Before )';
+	$('#edit_cell2')[0].innerHTML=createOptionHtml('python_number_expressions',100,python_operator_expressions_list,'Operator (Before element)','before');
+	$('#edit_cell3')[0].innerHTML=createOptionHtml('python_number_comparison_expressions',100,python_comparison_expressions_list,'Comparison (Before element)','before');
+	$('#edit_cell4')[0].innerHTML='After )';
+	$('#edit_cell5')[0].innerHTML=createOptionHtml('python_number_expressions',100,python_operator_expressions_list,'Operator (After element)','after');
+	$('#edit_cell6')[0].innerHTML=createOptionHtml('python_number_comparison_expressions',100,python_comparison_expressions_list,'Comparison (After element)','after');
+	}
+
 }
 
 /*
