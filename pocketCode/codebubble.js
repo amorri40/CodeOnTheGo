@@ -109,7 +109,7 @@ else {
   
 /* load the statements page initially */
 $(document).ready(function() {
-	loadPage("./SyntaxBlocks/python/statements.html", document.getElementById('tooltippanel'));
+	loadPage($("#syntaxcategory")[0].options[0].value, document.getElementById('tooltippanel')); //load the initial statements panel
 	   $("#syntaxcategory").quickChange(function() { 
 	   loadPage(this.options[this.selectedIndex].value, document.getElementById('tooltippanel'));
 	   });  
