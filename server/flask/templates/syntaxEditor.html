@@ -6,15 +6,19 @@
     <script src="{{ url_for('static', filename='lib/util/runmode.js') }}"></script>
     {% if extension == '.py' %}
     <script src="{{ url_for('static', filename='mode/python/python.js') }}"></script>
+    <script src="{{ url_for('static', filename='codeBubble/python_editor.js') }}"></script>
     {% elif extension == '.js' %}
     <script src="{{ url_for('static', filename='mode/javascript/javascript.js') }}"></script>
+    <script src="{{ url_for('static', filename='codeBubble/javascript_editor.js') }}"></script>
     {% elif extension == '.html' %}
     <script src="{{ url_for('static', filename='mode/xml/xml.js') }}"></script>
     <script src="{{ url_for('static', filename='mode/javascript/javascript.js') }}"></script>
     <script src="{{ url_for('static', filename='mode/css/css.js') }}"></script>
     <script src="{{ url_for('static', filename='mode/htmlmixed/htmlmixed.js') }}"></script>
+    <script src="{{ url_for('static', filename='codeBubble/html_editor.js') }}"></script>
     {% elif extension == '.css' %}
     <script src="{{ url_for('static', filename='mode/css/css.js') }}"></script>
+    <script src="{{ url_for('static', filename='codeBubble/css_editor.js') }}"></script>
     {% endif %}
     <!-- end codemirror includes -->
     
@@ -23,6 +27,7 @@
     <!-- code bubble includes -->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
       <script src="{{ url_for('static', filename='codebubble.js') }}"></script>
+      <script src="{{ url_for('static', filename='aes.js') }}"></script>
       <link id="codebubbleCSS" type="text/css" rel="stylesheet" href="{{ url_for('static', filename='codebubble.css') }}">
     <!-- End code bubble includes -->
     
@@ -48,16 +53,21 @@
  </script>
  <textarea id="code" style="width: 0px; height: 0px; visibility:hidden; overflow:hidden; padding: 0;">
 {{ content }}
-
-
 </textarea>
 <span id="saveresult">Not saved yet</span>
 <script>
 function save() {
-	$.post("/files/fname?fname={{ fname }}&save=true",{code:$('#output')[0].innerText},function(result){ $("#saveresult").html(result);});
+	var password = $('#pass')[0].value;
+  var plaintext = 'secret';
+  var ciphertext = Aes.Ctr.encrypt(plaintext, password, 256);
+  var code = Aes.Ctr.encrypt($('#output')[0].innerText, password, 256);
+	$.post("/files/fname?fname={{ fname }}&save=true",{code:code, pass:ciphertext},function(result){ $("#saveresult").html(result);});
 }
 </script>
+<div>
 <button onclick='save();'>Save</button>
+<input id='pass' value='userpassword' type='password'/>
+</div>
 
 <textarea id="bigcode" style="width: 0px; height: 0px; visibility:hidden; overflow:hidden; padding: 0;">
 #!/usr/bin/python

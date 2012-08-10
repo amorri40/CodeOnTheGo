@@ -1,9 +1,10 @@
 #!/bin/python
 
 from flask import Flask,render_template,url_for,redirect,request
-import subprocess,os,datetime, shutil
+import subprocess,os,datetime, shutil, aes
 app = Flask(__name__)
 app.debug = True
+password = "userpassword"
 
 
 @app.route('/files/<filename>',methods=['GET', 'POST'])
@@ -11,6 +12,15 @@ def printfiles(filename):
     returnstring=""
     fname=request.args.get('fname', '').replace('..','').replace('////','//')
     if (request.args.get('save', '') == 'true') :
+       
+       passcode=request.form['pass']
+       encrypted=request.form['code']
+       blocksize = 256
+       
+       if (aes.decrypt( passcode, password, blocksize )) != "secret": return "Failed"
+       #decrypt the code now that we know its the valid password
+       decrypted = aes.decrypt( encrypted, password, blocksize )
+       
        now = datetime.datetime.now()
        print 'save fname:'+fname
        #first backup the original file
@@ -19,7 +29,7 @@ def printfiles(filename):
        shutil.copyfile('./projects/'+fname, backupname)
        
        f = open('./projects/'+fname, 'w')
-       f.write(request.form['code'])
+       f.write(decrypted)
        f.close()
        return "saved at: "+str(datetime.datetime.now())
     if fname == '':
